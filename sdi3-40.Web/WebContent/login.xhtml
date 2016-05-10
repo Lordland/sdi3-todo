@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{settings.locale}">
+
+	<h:head>
+		<title>#{msgs.tituloHeadLogin}</title>
+		<h:body>
+			<h:form id = "menu1">
+				<p:menubar>
+					<p:menuitem value="#{msgs.botonMenu}">
+					</p:menuitem>
+					<p:submenu id = "gestion1" label="#{msgs.botonMenuGestionUsuarios}">
+						<p:menuitem id = "registroUsuario" value="#{msgs.botonMenuRegistrarse}" action="registro">
+						</p:menuitem>
+					</p:submenu>
+					
+					<f:facet name="options">
+						<h:commandLink id="español" value="#{msgs.enlaceIdiomaES}     "
+							actionListener="#{settings.setSpanish}">
+						</h:commandLink>
+						<h:commandLink id="ingles" value="     #{msgs.enlaceIdiomaEN}"
+							actionListener="#{settings.setEnglish}">
+						</h:commandLink>
+					</f:facet>
+
+				</p:menubar>
+
+			</h:form>
+			<h:form>
+				<center>
+					<h1>#{msgs.labelInicioSesion}</h1>
+				</center>
+				<p:panelGrid id="grid" columns="3" cellPadding="5"
+					style="margin: 0 auto;">
+					<p:outputLabel for="user" value="#{msgs.labelOutputUsuario}" />
+					<p:inputText id="user" type="text" value="#{usuarios.login}"
+						required="true"></p:inputText>
+					<p:message for="user" />
+
+					<p:outputLabel for="pass" value="#{msgs.labelOutputPass}" />
+					<p:inputText id="pass" type="password" required="true"
+						value="#{usuarios.pass}"></p:inputText>
+					<p:message for="pass" />
+
+				</p:panelGrid>
+				<div align="center">
+					<p:commandButton id = "enviarUser" value="#{msgs.botonEnviarLogin}"
+						action="#{usuarios.iniciarSesion}" update="grid" ajax="false">
+					</p:commandButton>
+				</div>
+
+			</h:form>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<p:dataTable var="viaje" styleClass="formTable"
+				value="#{viajes.viajes}" border="1" style="margin: 0 auto;">
+			style="margin: 0 auto;">
+			<p:column>
+					<f:facet name="header">#{msgs.tablaSalida}</f:facet>#{viaje.departure.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaDestino}</f:facet>#{viaje.destination.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaLlegada}</f:facet>#{viaje.arrivalDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaSalida}</f:facet>#{viaje.departureDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaCierre}</f:facet>#{viaje.closingDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaPlazasDisponibles}</f:facet>#{viaje.availablePax}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaPlazasMaximas}</f:facet>#{viaje.maxPax}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaPrecio}</f:facet>#{viaje.estimatedCost}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaEstado}</f:facet>#{viaje.status}</p:column>
+			</p:dataTable>
+		</h:body>
+	</h:head>
+</f:view>
+</html>

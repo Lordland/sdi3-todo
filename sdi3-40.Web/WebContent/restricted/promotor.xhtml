@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{settings.locale}">
+
+	<h:head>
+		<title>#{msgs.tituloPromotor}</title>
+	</h:head>
+	<h:body>
+		<h:form id="menu4">
+			<p:menubar id = "menu4-2">
+				<p:menuitem value="ShareMyTrip">
+				</p:menuitem>
+				<p:submenu id="gestion4" label="#{msgs.gestionViajes}">
+					<p:menuitem id="crearViaje" value="#{msgs.crearViaje}" action="crearViaje"
+						actionListener="#{viajes.iniciaViaje}">
+					</p:menuitem>
+				</p:submenu>
+				<p:submenu label="#{msgs.menuGestionUsuarios}">
+					<p:menuitem id="volver" value="#{msgs.paginaPrincipal}"
+						action="principal">
+					</p:menuitem>
+					<p:menuitem id="cerrar2" value="#{msgs.menuCerrarSesion}" action="cerrar"
+						actionListener="#{usuarios.cerrarSesion}" ajax="false">
+					</p:menuitem>
+				</p:submenu>
+				<f:facet name="options">
+						<h:commandLink id="español" value="#{msgs.enlaceIdiomaES}     "
+							actionListener="#{settings.setSpanish}">
+						</h:commandLink>
+						<h:commandLink id="ingles" value="     #{msgs.enlaceIdiomaEN}"
+							actionListener="#{settings.setEnglish}">
+						</h:commandLink>
+					</f:facet>
+			</p:menubar>
+		</h:form>
+		<br></br>
+		<br></br>
+
+		<br></br>
+		<h:form id="form2">
+			<center>
+				<h1>#{msgs.menuPromotor}</h1>
+			</center>
+			#{msgs.viajesCreadosPorUsted}
+			<p:dataTable id="promotor" var="viaje" styleClass="formTable"
+				value="#{viajes.viajesPromotor}" border="1" style="margin: 0 auto;"
+				editable="true">
+				<p:ajax event="rowEdit" listener="#{viajes.actualizar}" />
+				<p:ajax event="rowEditCancel"
+					listener="#{viajes.cancelarActualizar}" />
+				<p:column>
+					<f:facet name="header">#{msgs.tablaSalida}</f:facet>#{viaje.departure.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaDestino}</f:facet>#{viaje.destination.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaLlegada}</f:facet>#{viaje.arrivalDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaSalida}</f:facet>#{viaje.departureDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaCierre}</f:facet>#{viaje.closingDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaPlazasDisponibles}</f:facet>#{viaje.availablePax}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaPlazasMaximas}</f:facet>#{viaje.maxPax}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaPrecio}</f:facet>#{viaje.estimatedCost}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.modificarMin}</f:facet>
+					<h:commandLink action="modificarViaje" type="submit"
+						value="#{msgs.modificarMay}" immediate="true">
+						<f:setPropertyActionListener target="#{viajes.viaje}"
+							value="#{viaje}" />
+					</h:commandLink>
+				</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.estado}</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+					#{viaje.status}
+				</f:facet>
+						<f:facet name="input">
+							<h:selectOneMenu value="#{viaje.status}" style="width:100%">
+								<f:selectItems value="#{viajes.estados}" var="state"
+									itemLabel="#{status}" itemValue="#{status}" />
+							</h:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
+
+			<br></br>
+			<br></br>
+			<br></br>
+	
+	#{msgs.peticionesApuntarseViajes}
+	<br></br>
+
+			<p:dataTable var="apuntado" styleClass="formTable"
+				value="#{apuntados.listaApuntadosPromotor}" border="1"
+				style="margin: 0 auto;">
+				<p:column>
+					<f:facet name="header">#{msgs.labelOutputUsuario}</f:facet>#{apuntado.usuario.login}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaSalida}</f:facet>#{apuntado.viaje.departure.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaDestino}</f:facet>#{apuntado.viaje.destination.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaSalida}</f:facet>#{apuntado.viaje.departureDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaEstado}</f:facet>#{apuntado.relacionViaje}</p:column>
+
+				<p:column exportable="false"
+					rendered="#{apuntado.relacionViaje == 'PENDANT' 
+			|| apuntado.relacionViaje == 'EXCLUDED' }">
+					<p:commandLink value="#{msgs.aceptar}" action="#{apuntados.aceptar}"
+						immediate="true" update=":form2">
+						<f:setPropertyActionListener value="true"
+							target="#{apuntados.renderIframeColumn}" />
+						<f:setPropertyActionListener target="#{apuntados.apuntado}"
+							value="#{apuntado}" />
+					</p:commandLink>
+				</p:column>
+				<p:column exportable="false"
+					rendered="#{apuntado.relacionViaje == 'ACCEPTED' 
+			|| apuntado.relacionViaje == 'NO_SEAT' || apuntado.relacionViaje == 'PENDANT'}">
+					<p:commandLink value="#{msgs.rechazar}" action="#{apuntados.cancelar}"
+						immediate="true" update=":form2">
+						<f:setPropertyActionListener value="true"
+							target="#{apuntados.renderIframeColumn}" />
+						<f:setPropertyActionListener target="#{apuntados.apuntado}"
+							value="#{apuntado}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{settings.locale}">
+
+	<h:head>
+		<title>#{msgs.tituloModificar}</title>
+	</h:head>
+	<h:body>
+		<h:form>
+			<p:menubar>
+				<p:menuitem value="ShareMyTrip">
+				</p:menuitem>
+				<p:submenu label="#{msgs.menuGestionUsuarios}">
+					<p:menuitem value="#{msgs.menuCerrarSesion}" action="cerrar"
+						actionListener="#{usuarios.cerrarSesion}" ajax="false">
+					</p:menuitem>
+				</p:submenu>
+				<p:menuitem value="#{msgs.paginaPrincipal}" action="principal">
+				</p:menuitem>
+				<f:facet name="options">
+						<h:commandLink id="español" value="#{msgs.enlaceIdiomaES}     "
+							actionListener="#{settings.setSpanish}">
+						</h:commandLink>
+						<h:commandLink id="ingles" value="     #{msgs.enlaceIdiomaEN}"
+							actionListener="#{settings.setEnglish}">
+						</h:commandLink>
+					</f:facet>
+			</p:menubar>
+		</h:form>
+		<center>
+			<h1>ShareMyTrip</h1>
+			<br />
+			<h2>"#{msgs.modificarDatosUsuario}"</h2>
+		</center>
+		<br />
+		<br />
+		<br />
+		<h:form>
+			<p:panelGrid columns="2" styleClass="formTable">
+  #{msgs.nombre} 
+  <p:inputText value="#{usuarios.usuario.name}" />
+  
+  #{msgs.apellidos} 
+  <p:inputText value="#{usuarios.usuario.surname}" />
+  
+  #{msgs.email}  
+  <p:inputText value="#{usuarios.usuario.email}" />
+  
+  #{msgs.contrasenia}  
+  <p:inputText type="password" value="#{usuarios.usuario.password}" />
+  #{msgs.repContrasenia} 
+  <p:inputText type="password" value="#{usuarios.comparaPass}" />
+			</p:panelGrid>
+			<p:commandButton value="#{msgs.botonSalvar} " action="#{usuarios.modificarUsuario}" />
+		</h:form>
+	</h:body>
+</f:view>
+</html>

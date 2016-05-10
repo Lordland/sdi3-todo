@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{settings.locale}">
+
+	<h:head>
+		<title>#{msgs.tituloHeadRegistroUsuario}</title>
+	</h:head>
+	<h:body>
+		<h:form >
+			<p:menubar id = "menu2">
+				<p:menuitem value="#{msgs.botonMenu}" action="login">
+				</p:menuitem>
+				<f:facet name="options">
+						<h:commandLink id="español" value="#{msgs.enlaceIdiomaES}     "
+							actionListener="#{settings.setSpanish}">
+						</h:commandLink>
+						<h:commandLink id="ingles" value="     #{msgs.enlaceIdiomaEN}"
+							actionListener="#{settings.setEnglish}">
+						</h:commandLink>
+					</f:facet>
+			</p:menubar>
+		</h:form >
+		<center>
+			<h1>#{msgs.tituloRegistroUsuario}</h1>
+		</center>
+		<br />
+		<br />
+		<br />
+		<h:form id ="form-registro">
+			<p:panelGrid id="grid" columns="3" cellpadding="5">
+				<p:outputLabel for="login" value="#{msgs.labelOutputLogin}" />
+				<p:inputText id="login" value="#{usuarios.usuario.login}"
+					required="true" />
+				<p:message for="login" />
+
+				<p:outputLabel for="nombre" value="#{msgs.labelOutputNombre}" />
+				<p:inputText id="nombre" value="#{usuarios.usuario.name}"
+					required="true" />
+				<p:message for="nombre" />
+
+				<p:outputLabel for="apellidos" value="#{msgs.labelOutputApellidos}" />
+				<p:inputText id="apellidos" value="#{usuarios.usuario.surname}"
+					required="true" />
+				<p:message for="apellidos" />
+
+				<p:outputLabel for="email" value="#{msgs.labelOutputEmail}" />
+				<p:inputText id="email" value="#{usuarios.usuario.email}"
+					required="true" />
+				<p:message for="email" />
+
+				<p:outputLabel for="pass" value="#{msgs.labelOutputPass}" />
+				<p:inputText id="pass" type="password"
+					value="#{usuarios.usuario.password}" required="true" />
+				<p:message for="pass" />
+
+
+				<p:outputLabel for="pass2" value="#{msgs.labelOutputRepitePass}" />
+				<p:inputText id="pass2" type="password"
+					value="#{usuarios.comparaPass}" required="true" />
+				<p:message for="pass2" />
+
+			</p:panelGrid>
+			<p:commandButton id = "botonSalvarUsuario" value="#{msgs.botonSalvar}"
+				action="#{usuarios.crearUsuario}" update="grid" ajax="false" />
+		</h:form>
+	</h:body>
+</f:view>
+</html>

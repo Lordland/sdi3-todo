@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{settings.locale}">
+
+	<h:head>
+		<title>ShareMyTrip - Página principal del usuario</title>
+	</h:head>
+	<h:body>
+		<h:form id ="menu3">
+			<p:menubar>
+				<p:menuitem value="ShareMyTrip">
+				</p:menuitem>
+				<p:submenu id = "gestion2" label="#{msgs.menuGestionUsuarios}">
+					<p:menuitem id = "promotor" value="#{msgs.menuPromotor}" action="promotor"
+						actionListener="#{apuntados.vistaPromotor}">
+					</p:menuitem>
+					<p:menuitem id = "modificarUsuario" value="#{msgs.menuModificarUsuario}" action="modificar">
+					</p:menuitem>
+					<p:menuitem id = "cerrar1" value="#{msgs.menuCerrarSesion}" action="cerrar"
+						actionListener="#{usuarios.cerrarSesion}" ajax="false">
+					</p:menuitem>
+				</p:submenu>
+				<f:facet name="options">
+						<h:commandLink id="español" value="#{msgs.enlaceIdiomaES}     "
+							actionListener="#{settings.setSpanish}">
+						</h:commandLink>
+						<h:commandLink id="ingles" value="     #{msgs.enlaceIdiomaEN}"
+							actionListener="#{settings.setEnglish}">
+						</h:commandLink>
+					</f:facet>
+			</p:menubar>
+		</h:form>
+		<h:form id="form-principal">
+			<center>
+				<h1>#{msgs.paginaPrincipal}</h1>
+			</center>
+			<p:dataTable var="viaje" styleClass="formTable"
+				value="#{viajes.viajesUsuario}" border="1" style="margin: 0 auto;">
+				<p:column>
+					<f:facet name="header">#{msgs.tablaSalida}</f:facet>#{viaje.departure.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaDestino}</f:facet>#{viaje.destination.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaLlegada}</f:facet>#{viaje.arrivalDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaSalida}</f:facet>#{viaje.departureDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaCierre}</f:facet>#{viaje.closingDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaPlazasDisponibles}</f:facet>#{viaje.availablePax}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaPlazasMaximas}</f:facet>#{viaje.maxPax}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaPrecio}</f:facet>#{viaje.estimatedCost}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaEstado}</f:facet>#{viaje.status}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.apuntarseMin}</f:facet>
+					<p:commandLink action="#{apuntados.apuntarse(usuarios.usuario)}"
+						type="submit" value="#{msgs.apuntarseMay}" immediate="true"
+						update=":form-principal">
+						<f:setPropertyActionListener target="#{viajes.viaje}"
+							value="#{viaje}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+
+			<p:dataTable var="apuntado" styleClass="formTable"
+				value="#{apuntados.listaApuntadosUsuario}" border="1"
+				style="margin: 0 auto;">
+				<p:column>
+					<f:facet name="header">#{msgs.tablaSalida}</f:facet>#{apuntado.viaje.departure.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaDestino}</f:facet>#{apuntado.viaje.destination.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaFechaSalida}</f:facet>#{apuntado.viaje.departureDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.tablaEstado}</f:facet>#{apuntado.relacionViaje}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.apuntarseMin}</f:facet>
+					<p:commandLink action="#{apuntados.desapuntarse}" type="submit"
+						value="DESAPUNTARSE" immediate="true" update=":form-principal">
+						<f:setPropertyActionListener target="#{apuntados.apuntado}"
+							value="#{apuntado}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</h:body>
+</f:view>
+</html>
