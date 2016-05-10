@@ -186,4 +186,9 @@ public class EJBApplicationService implements LocalApplicationService, RemoteApp
 		return lista;
 	}
 
+	@Override
+	public List<Application> getApplication() {
+		return PersistenceFactory.newApplicationDao().findAll();
+	}
+
 }

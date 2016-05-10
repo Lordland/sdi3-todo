@@ -2,6 +2,7 @@ package uo.sdi.business;
 
 import java.util.List;
 
+import uo.sdi.model.Application;
 import uo.sdi.model.ListaApuntados;
 import uo.sdi.model.Seat;
 import uo.sdi.model.Trip;
@@ -21,4 +22,6 @@ public interface ApplicationService {
 	public List<ListaApuntados> listaApuntadosUsuario(User usuario);
 	
 	public List<ListaApuntados> listaApuntadosPromotor(List<Trip> viajes);
+	
+	public List<Application> getApplication();
 }
