@@ -5,14 +5,19 @@ import java.io.Serializable;
 import javax.xml.crypto.Data;
 
 /**
- * This class is not an entity, it is a DTO with the same fields as 
- * a row in the table
+ * This class is not an entity, it is a DTO with the same fields as a row in the
+ * table
  * 
  * @see Data Transfer Object pattern
  * @author alb
- *
+ * 
  */
-public class Rating implements Serializable{
+public class Rating implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6556735600920411359L;
 
 	private Long id;
 	private Long seatFromTripId;
@@ -81,14 +86,10 @@ public class Rating implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Rating [id=" + id 
-				+ ", comment=" + comment 
-				+ ", value=" + value 
-				+ ", seatFromTripId=" + seatFromTripId
-				+ ", seatFromUserId=" + seatFromUserId 
-				+ ", seatAboutTripId=" + seatAboutTripId 
-				+ ", seatAboutUserId=" + seatAboutUserId 
-			+ "]";
+		return "Rating [id=" + id + ", comment=" + comment + ", value=" + value
+				+ ", seatFromTripId=" + seatFromTripId + ", seatFromUserId="
+				+ seatFromUserId + ", seatAboutTripId=" + seatAboutTripId
+				+ ", seatAboutUserId=" + seatAboutUserId + "]";
 	}
-	
+
 }
