@@ -25,8 +25,11 @@ public class Main {
 	private static void run() throws Exception {
 		while(true){
 			System.out.println(mensaje);
-			int opcion = Console.readInt("Diga su opcion: "); 
-			if(opcion == 1){
+			Integer opcion = Console.readInt("Diga su opcion: "); 
+			if(opcion == null){
+				System.out.println("Por favor elija una de las opciones");
+			}
+			else if(opcion == 1){
 				mostrarDatos();
 			}
 			else if(opcion == 2){
@@ -62,7 +65,8 @@ public class Main {
 		}
 		for(Trip t : tr){
 			System.out.println("Viaje: " + t.getId() + " salida: " + 
-					t.getDeparture() +	" destino: " + t.getDestination());
+					t.getDeparture().getCity() +	" destino: " 
+					+ t.getDestination().getCity());
 			RatingService service = new RemoteEJBServicesLocator().getRatingService();
 			List<Rating> ratings = service.listarComentarios(t);
 			for(Rating r : ratings){
@@ -93,10 +97,10 @@ public class Main {
 		while(true){
 			System.out.println("Lista de ratings: ");
 			List<Rating> r = listaRatings();
-			long id = Console.readInt("Seleccione el id del rating "
-					+ "que desee borrar: ");
+			Long id = Console.readLong("Seleccione el id del rating "
+					+ "que desee borrar");
 			for(Rating rat : r){
-				if(rat.getId().equals(id)){
+				if(id != null && rat.getId().equals(id)){
 					new RemoteEJBServicesLocator().getRatingService()
 					.eliminarComentarios(rat.getId());
 					System.out.println("Rating borrado");
@@ -111,8 +115,8 @@ public class Main {
 		while(true){
 			System.out.println("Usuarios disponibles: ");
 			mostrarUsuarios();
-			long idUsuario = Console.readInt("Seleccione el id del usuario: ");
-			if(existeUsuario(idUsuario)){
+			Long idUsuario = Console.readLong("Seleccione el id del usuario: ");
+			if(idUsuario!=null && existeUsuario(idUsuario)){
 				UserService userS = new RemoteEJBServicesLocator()
 				.getUserService();
 				User u = userS.findById(idUsuario);

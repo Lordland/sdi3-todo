@@ -3,12 +3,17 @@ package uo.sdi.business.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.Stateless;
+import javax.jws.WebService;
+
 import uo.sdi.business.LocalRatingService;
 import uo.sdi.business.RemoteRatingService;
 import uo.sdi.model.Rating;
 import uo.sdi.model.Trip;
 import uo.sdi.persistence.PersistenceFactory;
 
+@Stateless
+@WebService (name = "RatingService")
 public class EJBRatingService implements LocalRatingService,RemoteRatingService{
 
 	@Override
