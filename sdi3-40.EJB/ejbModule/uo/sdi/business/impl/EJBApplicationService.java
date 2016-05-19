@@ -76,7 +76,7 @@ public class EJBApplicationService implements LocalApplicationService, RemoteApp
 				s.setStatus(SeatStatus.EXCLUDED);
 				s.setTripId(ids[1]);
 				s.setUserId(ids[0]);
-				sd.update(s);
+				sd.save(s);
 			}
 			Log.info(
 					"El usuario [%s] ha sido rechazado del viaje satisfactoriamente",
