@@ -53,7 +53,8 @@ public class EJBUserService implements LocalUserService, RemoteUserService{
 	}
 
 	private void putUserInSession(User user, Map<String ,Object> session) {
-		session.put("LOGGEDIN_USER", user);
+		if(!user.getStatus().equals(UserStatus.CANCELLED))
+			session.put("LOGGEDIN_USER", user);
 	}
 	
 	private void putUserOutSession(User user, Map<String ,Object> session) {;
@@ -63,5 +64,15 @@ public class EJBUserService implements LocalUserService, RemoteUserService{
 	@Override
 	public List<User> getUsers() {
 		return PersistenceFactory.newUserDao().findAll();
+	}
+
+	@Override
+	public User findById(long idUsuario) {
+		return PersistenceFactory.newUserDao().findById(idUsuario);
+	}
+
+	@Override
+	public void updateUser(User u) {
+		PersistenceFactory.newUserDao().update(u);
 	}
 }

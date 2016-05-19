@@ -8,4 +8,6 @@ public interface ServicesFactory {
 	public UserService getUserService();
 	
 	public ApplicationService getApplicationService();
+	
+	public RatingService getRatingService();
 }

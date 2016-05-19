@@ -16,6 +16,7 @@ import alb.util.log.Log;
 import uo.sdi.business.UserService;
 import uo.sdi.infraestructure.Factory;
 import uo.sdi.model.User;
+import uo.sdi.model.UserStatus;
 
 @ManagedBean(name = "usuarios")
 @SessionScoped
@@ -105,7 +106,8 @@ public class BeanUsuario implements Serializable {
 		if (usuario != null) {
 			UserService us = Factory.services.getUserService();
 			User userByLogin = us.buscaUsuario(login);
-			if (userByLogin != null && userByLogin.getPassword().equals(pass)) {
+			if (userByLogin != null && userByLogin.getPassword().equals(pass) 
+					&& userByLogin.getStatus().equals(UserStatus.ACTIVE)) {
 				Log.info("El usuario [%s] ha iniciado sesión",
 						usuario.getLogin());
 				usuario = userByLogin;

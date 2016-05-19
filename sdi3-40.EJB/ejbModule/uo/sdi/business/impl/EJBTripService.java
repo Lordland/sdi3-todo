@@ -70,5 +70,6 @@ public class EJBTripService implements LocalTripService , RemoteTripService{
 		}
 		
 	}
+
 	
 }
