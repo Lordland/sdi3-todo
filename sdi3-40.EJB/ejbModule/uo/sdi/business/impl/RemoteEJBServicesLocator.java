@@ -11,16 +11,16 @@ import uo.sdi.business.UserService;
 
 public class RemoteEJBServicesLocator implements ServicesFactory{
 
-	private static final String APPLICATION_SERVICE_JNDI_KEY = "java:global/"
-			+ "sdi3-40/" + "sdi3-40.EJB/" + "EJBApplicationService!"
+	private static final String APPLICATION_SERVICE_JNDI_KEY = 
+			"sdi3-40/" + "sdi3-40.EJB/" + "EJBApplicationService!"
 			+ "uo.sdi.business.RemoteApplicationService";
 	
-	private static final String TRIP_SERVICE_JNDI_KEY = "java:global/"
-			+ "sdi3-40/" + "sdi3-40.EJB/" + "EJBTripService!"
+	private static final String TRIP_SERVICE_JNDI_KEY = 
+			"sdi3-40/" + "sdi3-40.EJB/" + "EJBTripService!"
 			+ "uo.sdi.business.RemoteTripService";
 	
-	private static final String USER_SERVICE_JNDI_KEY = "java:global/"
-			+ "sdi3-40/" + "sdi3-40.EJB/" + "EJBUserService!"
+	private static final String USER_SERVICE_JNDI_KEY =
+			"sdi3-40/" + "sdi3-40.EJB/" + "EJBUserService!"
 			+ "uo.sdi.business.RemoteUserService";
 
 	@Override
