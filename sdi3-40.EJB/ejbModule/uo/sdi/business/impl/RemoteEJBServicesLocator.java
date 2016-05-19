@@ -5,6 +5,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import uo.sdi.business.ApplicationService;
+import uo.sdi.business.RatingService;
 import uo.sdi.business.ServicesFactory;
 import uo.sdi.business.TripService;
 import uo.sdi.business.UserService;
@@ -19,9 +20,13 @@ public class RemoteEJBServicesLocator implements ServicesFactory{
 			"sdi3-40/" + "sdi3-40.EJB/" + "EJBTripService!"
 			+ "uo.sdi.business.RemoteTripService";
 	
-	private static final String USER_SERVICE_JNDI_KEY =
+	private static final String USER_SERVICE_JNDI_KEY = 
 			"sdi3-40/" + "sdi3-40.EJB/" + "EJBUserService!"
 			+ "uo.sdi.business.RemoteUserService";
+	
+	private static final String RATING_SERVICE_JNDI_KEY = 
+			"sdi3-40/" + "sdi3-40.EJB/" + "EJBRatingService!"
+			+ "uo.sdi.business.RemoteRatingService";
 
 	@Override
 	public ApplicationService getApplicationService() {
@@ -48,6 +53,16 @@ public class RemoteEJBServicesLocator implements ServicesFactory{
 		try {
 			Context ctx = new InitialContext();
 			return (UserService) ctx.lookup(USER_SERVICE_JNDI_KEY);
+		} catch (NamingException e) {
+			throw new RuntimeException("JNDI problem", e);
+		}
+	}
+
+	@Override
+	public RatingService getRatingService() {
+		try {
+			Context ctx = new InitialContext();
+			return (RatingService) ctx.lookup(RATING_SERVICE_JNDI_KEY);
 		} catch (NamingException e) {
 			throw new RuntimeException("JNDI problem", e);
 		}

@@ -19,5 +19,9 @@ public interface UserService {
 	public void crearUsuario(User usuario, String comparaPass) throws Exception;
 
 	public List<User> getUsers();
+
+	public User findById(long idUsuario);
+
+	public void updateUser(User u);
 	
 }
