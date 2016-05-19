@@ -1,5 +1,6 @@
 package uo.sdi.business.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
@@ -7,6 +8,7 @@ import javax.jws.WebService;
 
 import uo.sdi.business.LocalUserService;
 import uo.sdi.business.RemoteUserService;
+import uo.sdi.infraestructure.Factory;
 import uo.sdi.model.User;
 import uo.sdi.model.UserStatus;
 import uo.sdi.persistence.PersistenceFactory;
@@ -56,5 +58,10 @@ public class EJBUserService implements LocalUserService, RemoteUserService{
 	
 	private void putUserOutSession(User user, Map<String ,Object> session) {;
 		session.put("LOGGEDIN_USER", user);
+	}
+
+	@Override
+	public List<User> getUsers() {
+		return PersistenceFactory.newUserDao().findAll();
 	}
 }
