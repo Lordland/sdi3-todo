@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class ListaApuntados implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 828860037912086236L;
+
 	public enum PeticionEstado {
 		ACCEPTED, EXCLUDED, PENDANT, PROMOTER, NO_SEAT
 	}

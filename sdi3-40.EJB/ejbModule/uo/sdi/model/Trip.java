@@ -12,6 +12,11 @@ import java.util.Date;
  */
 public class Trip implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6770980254073718483L;
+
 	private Long id;
 	
 	private AddressPoint departure;

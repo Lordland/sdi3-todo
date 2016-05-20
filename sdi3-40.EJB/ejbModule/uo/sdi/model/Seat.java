@@ -14,6 +14,10 @@ import javax.xml.crypto.Data;
  */
 public class Seat implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1844422180924892710L;
 	private Long userId;
 	private Long tripId;
 

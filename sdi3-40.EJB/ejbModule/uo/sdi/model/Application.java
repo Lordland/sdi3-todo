@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class Application implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7317213674940958526L;
 	private Long userId;
 	private Long tripId;
 
