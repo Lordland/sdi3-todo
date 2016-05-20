@@ -89,6 +89,6 @@ INSERT INTO TTRIPS VALUES(66,'2016-07-17 08:00:00.000000',3,'2016-07-10 00:00:00
 INSERT INTO TTRIPS VALUES(67,'2016-04-18 00:00:00.000000',0,'2016-04-12 00:00:00.000000','El mejor viaje','Carretera carbonera','Sevilla','Espania','Asturias',300.0E0,200.0E0,'789415','2016-04-27 00:00:00.000000','Capitan Cortes','New York','Espania','Madrid',300.0E0,100.0E0,'987454',60.0E0,0,0,316)
 INSERT INTO TTRIPS VALUES(68,'2016-04-19 00:00:00.000000',0,'2016-04-04 00:00:00.000000','Buen viaje','Capitan cortes','Avila','Espania','Madrid',300.0E0,100.0E0,'789641','2016-04-12 00:00:00.000000','Calle Europa','New York','Espania','Asturias',100.0E0,205.0E0,'87415',80.0E0,0,0,316)
 INSERT INTO TTRIPS VALUES(69,'2016-07-20 08:00:00.000000',3,'2016-07-10 00:00:00.000000','Buena experiencia','Calle milagros','Mieres','Espania','Espania',541.0E0,145.0E0,'33587','2016-07-19 10:00:00.000000','Baker street','Londres','Inglaterra','Inglaterra',5478.0E0,2154.0E0,'85',40.0E0,3,0,316)
-INSERT INTO TUSERS VALUES(306,'user1@mail.com','user1','Fernando','user1',0,'Alvarez')
+INSERT INTO TUSERS VALUES(306,'user1@mail.com','user1','Fernando','user1',1,'Alvarez')
 INSERT INTO TUSERS VALUES(307,'user2@mail.com','user2','Luisa','user2',0,'Perez')
 INSERT INTO TUSERS VALUES(316,'user3@gmail.com','user3','Hector','user3',0,'Alvarez')
