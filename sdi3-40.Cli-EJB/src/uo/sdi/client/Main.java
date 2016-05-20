@@ -98,7 +98,7 @@ public class Main {
 			System.out.println("Lista de ratings: ");
 			List<Rating> r = listaRatings();
 			Long id = Console.readLong("Seleccione el id del rating "
-					+ "que desee borrar");
+					+ "que desee borrar o 0 para salir");
 			for(Rating rat : r){
 				if(id != null && rat.getId().equals(id)){
 					new RemoteEJBServicesLocator().getRatingService()
@@ -106,6 +106,9 @@ public class Main {
 					System.out.println("Rating borrado");
 					return;
 				}
+			}
+			if(id == 0L){
+				return;
 			}
 			System.out.println("Error, por favor introduzca un id de la lista");
 		}
@@ -115,7 +118,7 @@ public class Main {
 		while(true){
 			System.out.println("Usuarios disponibles: ");
 			mostrarUsuarios();
-			Long idUsuario = Console.readLong("Seleccione el id del usuario: ");
+			Long idUsuario = Console.readLong("Seleccione el id del usuario o 0 para salir: ");
 			if(idUsuario!=null && existeUsuario(idUsuario)){
 				UserService userS = new RemoteEJBServicesLocator()
 				.getUserService();
@@ -129,6 +132,9 @@ public class Main {
 					System.out.println("El usuario se ha cancelado con exito");
 				}
 				userS.updateUser(u);
+				return;
+			}
+			if(idUsuario == 0L){
 				return;
 			}
 			else{

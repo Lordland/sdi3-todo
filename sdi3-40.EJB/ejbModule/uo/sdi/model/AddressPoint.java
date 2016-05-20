@@ -10,12 +10,18 @@ import java.io.UnsupportedEncodingException;
  */
 public class AddressPoint implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String address;
 	private String city;
 	private String state;
 	private String country;
 	private String zipCode;
 	private Waypoint waypoint;
+	
+	public AddressPoint(){}
 	
 	public AddressPoint(String address, String city, String state, 
 			String country, String zipCode, Waypoint waypoint) {
