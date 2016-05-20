@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class LoginFilter
  */
-@WebFilter(dispatcherTypes = { DispatcherType.REQUEST }, urlPatterns = { "/restricted/*" }, initParams = { @WebInitParam(name = "Inicio", value = "/login.xhtml") })
+@WebFilter(dispatcherTypes = { DispatcherType.REQUEST }, urlPatterns = { "/restricted/*","/rest/*" }, initParams = { @WebInitParam(name = "Inicio", value = "/login.xhtml") })
 public class LoginFilter implements Filter {
 	// Necesitamos acceder a los parámetros de inicialización en
 	// el método doFilter por lo que necesitamos la variable
@@ -62,7 +62,8 @@ public class LoginFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		HttpSession session = req.getSession();
-		if (session.getAttribute("LOGGEDIN_USER") == null) {
+		if (session.getAttribute("LOGGEDIN_USER") == null) { //TODO buscar en 
+			//cabecera usuario y contraseña y que coincida con uno de la base de datos
 			String loginForm = config.getInitParameter("Inicio");
 			// Si no hay login, redirección al formulario de login
 			res.sendRedirect(req.getContextPath() + loginForm);
@@ -70,5 +71,7 @@ public class LoginFilter implements Filter {
 		}
 		chain.doFilter(request, response);
 	}
+	
+	//desencriptar lo de authenticador de base64 y pasar de bytes a UTF8
 
 }
