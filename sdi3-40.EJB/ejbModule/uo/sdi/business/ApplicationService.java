@@ -24,4 +24,6 @@ public interface ApplicationService {
 	public List<ListaApuntados> listaApuntadosPromotor(List<Trip> viajes);
 	
 	public List<Application> getApplication();
+	
+	public List<ListaApuntados> peticionesParaUnViaje(Trip t);
 }

@@ -21,8 +21,9 @@ import uo.sdi.persistence.SeatDao;
 import uo.sdi.persistence.TripDao;
 
 @Stateless
-@WebService (name = "ApplicationService")
-public class EJBApplicationService implements LocalApplicationService, RemoteApplicationService {
+@WebService(name = "ApplicationService")
+public class EJBApplicationService implements LocalApplicationService,
+		RemoteApplicationService {
 
 	public Seat aceptarUsuario(ListaApuntados apuntado) {
 		try {
@@ -181,6 +182,30 @@ public class EJBApplicationService implements LocalApplicationService, RemoteApp
 					a.setRelacionViaje();
 					lista.add(a);
 				}
+			}
+		}
+		return lista;
+	}
+
+	public List<ListaApuntados> peticionesParaUnViaje(Trip t) {
+		List<ListaApuntados> lista = new ArrayList<ListaApuntados>();
+		List<uo.sdi.model.Application> reservas = PersistenceFactory
+				.newApplicationDao().findAll();
+		List<Seat> asientos = PersistenceFactory.newSeatDao().findAll();
+		for (uo.sdi.model.Application ap : reservas) {
+			ListaApuntados a = new ListaApuntados();
+			if (ap.getTripId().equals(t.getId())) {
+				a.setUsuario(PersistenceFactory.newUserDao().findById(
+						ap.getUserId()));
+				a.setViaje(t);
+				for (Seat s : asientos) {
+					if (s.getTripId().equals(t.getId())
+							&& a.getUsuario().getId().equals(s.getUserId())) {
+						a.setAsiento(s);
+					}
+				}
+				a.setRelacionViaje();
+				lista.add(a);
 			}
 		}
 		return lista;

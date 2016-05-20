@@ -2,7 +2,11 @@ package uo.sdi.model;
 
 import java.io.Serializable;
 
-public class ListaApuntados implements Serializable{
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "listaApuntados")
+public class ListaApuntados implements Serializable {
 
 	/**
 	 * 
@@ -18,6 +22,7 @@ public class ListaApuntados implements Serializable{
 	Seat asiento;
 	PeticionEstado relacionViaje;
 
+	@XmlElement
 	public Trip getViaje() {
 		return viaje;
 	}
@@ -26,6 +31,7 @@ public class ListaApuntados implements Serializable{
 		this.viaje = viaje;
 	}
 
+	@XmlElement
 	public User getUsuario() {
 		return usuario;
 	}
@@ -34,6 +40,7 @@ public class ListaApuntados implements Serializable{
 		this.usuario = usuario;
 	}
 
+	@XmlElement
 	public Seat getAsiento() {
 		return asiento;
 	}
@@ -42,6 +49,7 @@ public class ListaApuntados implements Serializable{
 		this.asiento = asiento;
 	}
 
+	@XmlElement
 	public PeticionEstado getRelacionViaje() {
 		return relacionViaje;
 	}
