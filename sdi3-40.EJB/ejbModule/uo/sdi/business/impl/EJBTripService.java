@@ -71,5 +71,10 @@ public class EJBTripService implements LocalTripService , RemoteTripService{
 		
 	}
 
+	@Override
+	public Trip buscarViaje(Long id) {
+		return PersistenceFactory.newTripDao().findById(id);
+	}
+
 	
 }

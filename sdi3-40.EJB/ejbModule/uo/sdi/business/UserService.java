@@ -23,5 +23,7 @@ public interface UserService {
 	public User findById(long idUsuario);
 
 	public void updateUser(User u);
+
+	public User buscaUsuario(String login, String password);
 	
 }

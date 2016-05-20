@@ -17,4 +17,6 @@ public interface TripService {
 	public Trip iniciaViaje();
 	
 	public void creaViaje(Trip viaje, User usuario);
+	
+	public Trip buscarViaje(Long id);
 }

@@ -7,5 +7,7 @@ public interface UserDao extends GenericDao<User, Long>{
 
 	User findByLogin(String login);
 	
+	User findByLoginPassword(String login, String password);
+	
 
 }
