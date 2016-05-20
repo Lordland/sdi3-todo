@@ -28,7 +28,7 @@ public class BeanApplication implements Serializable {
 	ListaApuntados apuntado;
 
 	private boolean renderIframeColumn;
-
+ 
 	public BeanApplication() {
 		if (bv == null) {
 			FacesContext context = FacesContext.getCurrentInstance();
