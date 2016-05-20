@@ -8,7 +8,6 @@ import javax.jws.WebService;
 
 import uo.sdi.business.LocalUserService;
 import uo.sdi.business.RemoteUserService;
-import uo.sdi.infraestructure.Factory;
 import uo.sdi.model.User;
 import uo.sdi.model.UserStatus;
 import uo.sdi.persistence.PersistenceFactory;

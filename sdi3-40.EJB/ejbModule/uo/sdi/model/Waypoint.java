@@ -8,8 +8,16 @@ import java.io.Serializable;
  */
 public class Waypoint implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -594948312674320206L;
 	private Double lat;
 	private Double lon;
+	
+	public Waypoint(){
+		
+	}
 	
 	public Waypoint(Double lat, Double lon) {
 		super();
