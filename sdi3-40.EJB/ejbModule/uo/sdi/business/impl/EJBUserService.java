@@ -74,4 +74,9 @@ public class EJBUserService implements LocalUserService, RemoteUserService{
 	public void updateUser(User u) {
 		PersistenceFactory.newUserDao().update(u);
 	}
+
+	@Override
+	public User buscaUsuario(String login, String password) {
+		return PersistenceFactory.newUserDao().findByLoginPassword(login, password);
+	}
 }
