@@ -1,2 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14598920190050" configfile="/sdi3-40.Web/WebContent/WEB-INF/faces-config.xml"/>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14598920190050" configfile="/sdi3-40.Web/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="770" y="380" id="pf14637865447590" referenceLink="//@navigationRule.6/@navigationCase.3/@toViewId|" outlinks="pf14637865447591 pf14637865447592 pf14637865447593" inlinks="pf14637865447591 pf14637865447594 pf14637865447595 pf14637865447596 pf14637865447597 pf14637865447598" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="registrarse.xhtml" x="554" y="178" id="pf14637865447599" referenceLink="//@navigationRule.1/@navigationCase.2/@toViewId|" outlinks="pf14637865447594 pf14637865447595 pf146378654475910" inlinks="pf14637865447592 pf146378654475910" path="/registrarse.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="crearViaje.xhtml" x="122" y="188" id="pf146378654475911" referenceLink="//@navigationRule.4/@fromViewId|" outlinks="pf146378654475912 pf146378654475913 pf146378654475914" path="/prohibido/crearViaje.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="modificarViaje.xhtml" x="122" y="572" id="pf146378654475915" referenceLink="//@navigationRule.5/@fromViewId|" outlinks="pf146378654475916 pf146378654475917 pf146378654475918" path="/prohibido/modificarViaje.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="modificar.xhtml" id="pf146378654475919" referenceLink="//@navigationRule.6/@fromViewId|" outlinks="pf146378654475920 pf14637865447598 pf146378654475921 pf146378654475922" inlinks="pf146378654475923 pf146378654475920" path="/prohibido/modificar.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="principal.xhtml" id="pf146378654475924" referenceLink="//@navigationRule.6/@navigationCase.1/@toViewId|" outlinks="pf14637865447596 pf146378654475923 pf146378654475925" inlinks="pf14637865447593 pf146378654475926 pf146378654475921 pf146378654475922" path="/prohibido/principal.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="promotor.xhtml" id="pf146378654475927" referenceLink="//@navigationRule.5/@navigationCase.2/@toViewId|" outlinks="pf14637865447597 pf146378654475926" inlinks="pf146378654475925 pf146378654475912 pf146378654475913 pf146378654475914 pf146378654475916 pf146378654475917 pf146378654475918" path="/prohibido/promotor.xhtml"/>
+  <links id="pf14637865447592" target="pf14637865447599" source="pf14637865447590" outcome="registro"/>
+  <links id="pf14637865447594" target="pf14637865447590" source="pf14637865447599" outcome="login"/>
+  <links id="pf14637865447595" target="pf14637865447590" source="pf14637865447599" outcome="exito" fromaction="#{usuarios.crearUsuario}"/>
+  <links id="pf14637865447591" target="pf14637865447590" source="pf14637865447590" outcome="fracaso" fromaction="#{usuarios.iniciarSesion}">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+  <links id="pf146378654475910" target="pf14637865447599" source="pf14637865447599" outcome="fracaso" fromaction="#{usuarios.crearUsuario}">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+  <links id="pf14637865447593" target="pf146378654475924" source="pf14637865447590" outcome="exito" fromaction="#{usuarios.iniciarSesion}"/>
+  <links id="pf14637865447596" target="pf14637865447590" source="pf146378654475924" outcome="cerrar"/>
+  <links id="pf146378654475923" target="pf146378654475919" source="pf146378654475924" outcome="modificar"/>
+  <links id="pf146378654475925" target="pf146378654475927" source="pf146378654475924" outcome="promotor" fromaction="#{apuntados.vistaPromotor}"/>
+  <links id="pf14637865447597" target="pf14637865447590" source="pf146378654475927" outcome="cerrar"/>
+  <links id="pf146378654475926" target="pf146378654475924" source="pf146378654475927" outcome="principal"/>
+  <links id="pf146378654475912" target="pf146378654475927" source="pf146378654475911" outcome="promotor"/>
+  <links id="pf146378654475913" target="pf146378654475927" source="pf146378654475911" outcome="exito" fromaction="#{usuarios.crearViaje}"/>
+  <links id="pf146378654475914" target="pf146378654475927" source="pf146378654475911" outcome="fracaso" fromaction="#{usuarios.crearViaje}"/>
+  <links id="pf146378654475916" target="pf146378654475927" source="pf146378654475915" outcome="promotor"/>
+  <links id="pf146378654475917" target="pf146378654475927" source="pf146378654475915" outcome="exito" fromaction="#{viajes.cambiaViaje}"/>
+  <links id="pf146378654475918" target="pf146378654475927" source="pf146378654475915" outcome="fracaso" fromaction="#{viajes.cambiaViaje}"/>
+  <links id="pf146378654475920" target="pf146378654475919" source="pf146378654475919" outcome="fracaso" fromaction="#{usuarios.modificarUsuario}"/>
+  <links id="pf14637865447598" target="pf14637865447590" source="pf146378654475919" outcome="cerrar"/>
+  <links id="pf146378654475921" target="pf146378654475924" source="pf146378654475919" outcome="principal"/>
+  <links id="pf146378654475922" target="pf146378654475924" source="pf146378654475919" outcome="exito" fromaction="#{usuarios.modificarUsuario}"/>
+</pageflow:Pageflow>

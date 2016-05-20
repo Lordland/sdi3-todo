@@ -24,6 +24,8 @@ public interface UserService {
 
 	public void updateUser(User u);
 
-	public User buscaUsuario(String login, String password);
+	public User buscaUsuarioPass(String login, String password);
+	
+	public boolean darDeBajaUsuario(Long id);
 	
 }

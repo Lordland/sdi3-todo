@@ -1,5 +1,7 @@
 package uo.sdi.business.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -75,6 +77,34 @@ public class EJBTripService implements LocalTripService , RemoteTripService{
 	public Trip buscarViaje(Long id) {
 		return PersistenceFactory.newTripDao().findById(id);
 	}
+
+	@Override
+	public List<Trip> listarViajesUltimoMes() {
+		List<Trip> trips = listarViajes();
+		List<Trip> tr = new ArrayList<Trip>();
+		Date d = new Date();
+		d.setTime(d.getTime() + 30 * 1000 * 60 * 60 * 24);
+		for(Trip t : trips){
+			if(t.getDepartureDate().compareTo(d) < 0){
+				tr.add(t);
+			}
+		}
+		return tr;
+	}
+
+	@Override
+	public List<Trip> listaViajePromotor(Long id) {
+		List<Trip> viajes = listarViajes();
+		List<Trip> aux = new ArrayList<Trip>();
+		for (Trip t : viajes) {
+			if (t.getPromoterId().equals(id)) {
+				aux.add(t);
+			}
+		}
+		return aux;
+	}
+	
+	
 
 	
 }

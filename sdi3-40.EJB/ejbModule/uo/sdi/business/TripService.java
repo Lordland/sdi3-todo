@@ -19,4 +19,8 @@ public interface TripService {
 	public void creaViaje(Trip viaje, User usuario);
 	
 	public Trip buscarViaje(Long id);
+
+	public List<Trip> listarViajesUltimoMes();
+
+	public List<Trip> listaViajePromotor(Long id);
 }
