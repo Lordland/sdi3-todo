@@ -1,5 +1,6 @@
 package uo.sdi.rest.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -9,6 +10,7 @@ import uo.sdi.business.TripService;
 import uo.sdi.business.UserService;
 import uo.sdi.infraestructure.Factory;
 import uo.sdi.model.ListaApuntados;
+import uo.sdi.model.SeatStatus;
 import uo.sdi.model.Trip;
 import uo.sdi.model.User;
 import uo.sdi.rest.Sdi3ServicesRest;
@@ -65,6 +67,22 @@ public class Sdi3ServicesRestImpl implements Sdi3ServicesRest{
 	@Override
 	public Trip buscarViaje(Long id) throws EntityNotFoundException {
 		return serviceT.buscarViaje(id);
+	}
+
+
+
+	@Override
+	public List<Trip> listarViajesPromotorParticipado(Long idUsuario) {
+		User u = serviceU.findById(idUsuario);
+		List<ListaApuntados> l = serviceA.listaApuntadosUsuario(u);
+		List<Trip> v = new ArrayList<Trip>();
+		for(ListaApuntados list : l){
+			if(list.getAsiento().getStatus().equals(SeatStatus.ACCEPTED)
+					|| list.getViaje().getPromoterId().equals(idUsuario)){
+				v.add(list.getViaje());
+			}
+		}
+		return v;
 	}
 
 

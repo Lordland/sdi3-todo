@@ -44,8 +44,8 @@ public class Main {
 
 			}
 			if (cliente != null) {
-				listadoViajesPromovidos(cliente); // A Get
-													// operation
+				listadoViajesPromovidos(cliente);
+				break;
 
 			} else {
 				if (!mensaje) {
@@ -91,7 +91,7 @@ public class Main {
 			for (Trip t : v) {
 				if (t.getId().equals(id)) {
 					listarApuntados(id);
-					return;
+					break;
 				}
 			}
 			System.out
@@ -120,7 +120,7 @@ public class Main {
 				for (ListaApuntados l : v) {
 					if (l.getUsuario().getId().equals(idUs)) {
 						client.aceptarUsuario(l);
-						return;
+						break;
 					}
 				}
 				System.out
@@ -128,7 +128,7 @@ public class Main {
 				if (idUs.equals(0L)) {
 					System.out
 							.println("Ha decidido salir. Hasta la próxima :)");
-					return;
+					break;
 				}
 
 			}
