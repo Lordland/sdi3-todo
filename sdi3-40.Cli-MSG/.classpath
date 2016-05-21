@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="src/lib/jboss-jms-api_1.1_spec-1.0.0.Final.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/sdi3-40.EJB"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
