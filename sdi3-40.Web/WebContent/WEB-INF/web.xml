@@ -45,10 +45,14 @@
 		<servlet-name>resteasy</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-	
-	
+
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>afterwork</param-value>
 	</context-param>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>ApplicationRealm</realm-name>
+	</login-config>
 </web-app>

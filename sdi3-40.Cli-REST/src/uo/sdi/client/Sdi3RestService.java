@@ -1,8 +1,7 @@
-package uo.sdi.rest;
+package uo.sdi.client;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,15 +12,15 @@ import javax.ws.rs.core.MediaType;
 
 import uo.sdi.model.ListaApuntados;
 import uo.sdi.model.Trip;
-import uo.sdi.model.User;
+import uo.sdi.model.User; 
 
 @Path("/Sdi3ServicesRest")
-public interface Sdi3ServicesRest {
+public interface Sdi3RestService {
 
 	@GET
 	@Path("/buscarUsuario/{login}/{password}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	User buscarUsuario(@PathParam("login") String login, @PathParam("password") String password);
+	User buscarUsuario(@PathParam("login") String login,@PathParam("password") String password);
 	
 	@GET
 	@Path("/listarViajes")
@@ -31,17 +30,17 @@ public interface Sdi3ServicesRest {
 	@POST
 	@Path("/actualizarViaje")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	void actualizarViaje(Trip viaje) throws EntityNotFoundException;
+	void actualizarViaje(Trip viaje);
 	
 	@POST
 	@Path("/actualizarViajeId/{id}")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	void actualizarViajeId(@PathParam("id") Long id) throws EntityNotFoundException;
+	void actualizarViajeId(@PathParam("id") Long id);
 	
 	@GET
 	@Path("/buscarViaje/{id}")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	Trip buscarViaje(@PathParam("id") Long id) throws EntityNotFoundException;
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	Trip buscarViaje(@PathParam("id") Long id);
 	
 	@POST
 	@Path("/listarApuntados")
@@ -52,11 +51,11 @@ public interface Sdi3ServicesRest {
 	@POST
 	@Path("/cancelar")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	void cancelarUsuario(ListaApuntados apuntado) throws EntityNotFoundException;
-	
+	void cancelarUsuario(ListaApuntados apuntado);
+	 
 	@POST
 	@Path("/aceptar")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	void aceptarUsuario(ListaApuntados apuntado) throws EntityNotFoundException;
+	void aceptarUsuario(ListaApuntados apuntado);
 	
 }

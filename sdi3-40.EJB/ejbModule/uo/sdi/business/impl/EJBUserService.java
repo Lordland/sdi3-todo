@@ -8,7 +8,6 @@ import javax.jws.WebService;
 
 import uo.sdi.business.LocalUserService;
 import uo.sdi.business.RemoteUserService;
-import uo.sdi.business.UserService;
 import uo.sdi.model.ListaApuntados;
 import uo.sdi.model.User;
 import uo.sdi.model.UserStatus;
