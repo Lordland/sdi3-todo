@@ -15,7 +15,7 @@ import uo.sdi.model.ListaApuntados;
 import uo.sdi.model.Trip;
 import uo.sdi.model.User;
 
-@Path("/Sd3ServicesRest")
+@Path("/Sdi3ServicesRest")
 public interface Sdi3ServicesRest {
 
 	@GET
@@ -38,12 +38,12 @@ public interface Sdi3ServicesRest {
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	void actualizarViajeId(@PathParam("id") Long id) throws EntityNotFoundException;
 	
-	@POST
+	@GET
 	@Path("/buscarViaje/{id}")
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	Trip buscarViaje(@PathParam("id") Long id) throws EntityNotFoundException;
 	
-	@GET
+	@POST
 	@Path("/listarApuntados")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

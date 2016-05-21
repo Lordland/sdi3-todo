@@ -35,7 +35,7 @@
 		<navigation-case>
 			<from-action>#{usuarios.iniciarSesion}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/restricted/principal.xhtml</to-view-id>
+			<to-view-id>/reserved/principal.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{usuarios.iniciarSesion}</from-action>
@@ -67,27 +67,27 @@
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>principal.xhtml</display-name>
-		<from-view-id>/restricted/principal.xhtml</from-view-id>
+		<from-view-id>/reserved/principal.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>cerrar</from-outcome>
 			<to-view-id>/login.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>modificar</from-outcome>
-			<to-view-id>/restricted/modificar.xhtml</to-view-id>
+			<to-view-id>/reserved/modificar.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{apuntados.vistaPromotor}</from-action>
 			<from-outcome>promotor</from-outcome>
-			<to-view-id>/restricted/promotor.xhtml</to-view-id>
+			<to-view-id>/reserved/promotor.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>promotor.xhtml</display-name>
-		<from-view-id>/restricted/promotor.xhtml</from-view-id>
+		<from-view-id>/reserved/promotor.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>principal</from-outcome>
-			<to-view-id>/restricted/principal.xhtml</to-view-id>
+			<to-view-id>/reserved/principal.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>cerrar</from-outcome>
@@ -96,56 +96,56 @@
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>crearViaje.xhtml</display-name>
-		<from-view-id>/restricted/crearViaje.xhtml</from-view-id>
+		<from-view-id>/reserved/crearViaje.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>promotor</from-outcome>
-			<to-view-id>/restricted/promotor.xhtml</to-view-id>
+			<to-view-id>/reserved/promotor.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{usuarios.crearViaje}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/restricted/promotor.xhtml</to-view-id>			
+			<to-view-id>/reserved/promotor.xhtml</to-view-id>			
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{usuarios.crearViaje}</from-action>
 			<from-outcome>fracaso</from-outcome>
-			<to-view-id>/restricted/promotor.xhtml</to-view-id>
+			<to-view-id>/reserved/promotor.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>modificarViaje.xhtml</display-name>
-		<from-view-id>/restricted/modificarViaje.xhtml</from-view-id>
+		<from-view-id>/reserved/modificarViaje.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>promotor</from-outcome>
-			<to-view-id>/restricted/promotor.xhtml</to-view-id>
+			<to-view-id>/reserved/promotor.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{viajes.cambiaViaje}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/restricted/promotor.xhtml</to-view-id>
+			<to-view-id>/reserved/promotor.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{viajes.cambiaViaje}</from-action>
 			<from-outcome>fracaso</from-outcome>
-			<to-view-id>/restricted/promotor.xhtml</to-view-id>
+			<to-view-id>/reserved/promotor.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>modificar.xhtml</display-name>
-		<from-view-id>/restricted/modificar.xhtml</from-view-id>
+		<from-view-id>/reserved/modificar.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>principal</from-outcome>
-			<to-view-id>/restricted/principal.xhtml</to-view-id>
+			<to-view-id>/reserved/principal.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{usuarios.modificarUsuario}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/restricted/principal.xhtml</to-view-id>
+			<to-view-id>/reserved/principal.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{usuarios.modificarUsuario}</from-action>
 			<from-outcome>fracaso</from-outcome>
-			<to-view-id>/restricted/modificar.xhtml</to-view-id>
+			<to-view-id>/reserved/modificar.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>cerrar</from-outcome>

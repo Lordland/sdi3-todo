@@ -37,6 +37,17 @@ public class EJBRatingService implements LocalRatingService,RemoteRatingService{
 	public List<Rating> listarRatings() {
 		return PersistenceFactory.newRatingDao().findAll();
 	}
+
+	@Override
+	public void borrarRating(Long id) {
+		List<Rating> r = listarRatings();
+		for(Rating rat : r){
+			if(id != null && rat.getId().equals(id)){
+				new RemoteEJBServicesLocator().getRatingService()
+				.eliminarComentarios(rat.getId());
+			}
+		}
+	}
 	
 	
 

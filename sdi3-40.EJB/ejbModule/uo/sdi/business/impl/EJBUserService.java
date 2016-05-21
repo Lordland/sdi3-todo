@@ -8,28 +8,28 @@ import javax.jws.WebService;
 
 import uo.sdi.business.LocalUserService;
 import uo.sdi.business.RemoteUserService;
+import uo.sdi.model.ListaApuntados;
 import uo.sdi.model.User;
 import uo.sdi.model.UserStatus;
 import uo.sdi.persistence.PersistenceFactory;
 import alb.util.log.Log;
 
 @Stateless
-@WebService (name = "UserService")
-public class EJBUserService implements LocalUserService, RemoteUserService{
-	
-	public User buscaUsuario(String login){
+@WebService(name = "UserService")
+public class EJBUserService implements LocalUserService, RemoteUserService {
+
+	public User buscaUsuario(String login) {
 		return PersistenceFactory.newUserDao().findByLogin(login);
 	}
-	
-	public void crearUsuario(User usuario, String comparaPass) throws Exception{
+
+	public void crearUsuario(User usuario, String comparaPass) throws Exception {
 		usuario.setStatus(UserStatus.ACTIVE);
 		try {
-			if(comparaPass.equals(usuario.getPassword())){
-			PersistenceFactory.newUserDao().save(usuario);
-			Log.info("El usuario [%s] ha sido creado satisfactoriamente",
-					usuario.getLogin());
-			}
-			else{
+			if (comparaPass.equals(usuario.getPassword())) {
+				PersistenceFactory.newUserDao().save(usuario);
+				Log.info("El usuario [%s] ha sido creado satisfactoriamente",
+						usuario.getLogin());
+			} else {
 				throw new Exception();
 			}
 		} catch (Exception e) {
@@ -38,25 +38,26 @@ public class EJBUserService implements LocalUserService, RemoteUserService{
 			throw new Exception();
 		}
 	}
-	
-	public void iniciaSesion(User usuario, Map<String ,Object> session){
+
+	public void iniciaSesion(User usuario, Map<String, Object> session) {
 		putUserInSession(usuario, session);
 	}
-	
-	public void cerrarSesion(User usuario, Map<String ,Object> session){
+
+	public void cerrarSesion(User usuario, Map<String, Object> session) {
 		putUserOutSession(usuario, session);
 	}
-	
-	public void actualizarUsario(User usuario){
+
+	public void actualizarUsario(User usuario) {
 		PersistenceFactory.newUserDao().update(usuario);
 	}
 
-	private void putUserInSession(User user, Map<String ,Object> session) {
-		if(!user.getStatus().equals(UserStatus.CANCELLED))
+	private void putUserInSession(User user, Map<String, Object> session) {
+		if (!user.getStatus().equals(UserStatus.CANCELLED))
 			session.put("LOGGEDIN_USER", user);
 	}
-	
-	private void putUserOutSession(User user, Map<String ,Object> session) {;
+
+	private void putUserOutSession(User user, Map<String, Object> session) {
+		;
 		session.put("LOGGEDIN_USER", user);
 	}
 
@@ -76,7 +77,36 @@ public class EJBUserService implements LocalUserService, RemoteUserService{
 	}
 
 	@Override
-	public User buscaUsuario(String login, String password) {
-		return PersistenceFactory.newUserDao().findByLoginPassword(login, password);
+	public User buscaUsuarioPass(String login, String password) {
+		return PersistenceFactory.newUserDao().findByLoginPassword(login,
+				password);
+	}
+
+	@Override
+	public boolean darDeBajaUsuario(Long id) {
+		boolean existe = false;
+		if (id != null && existeUsuario(id)) {
+			existe = true;
+			EJBApplicationService apS = new EJBApplicationService();
+			User u = findById(id);
+			u.setStatus(UserStatus.CANCELLED);
+			List<ListaApuntados> user = apS.listaApuntadosUsuario(u);
+			for (ListaApuntados l : user) {
+				apS.cancelarUsuario(l);
+				System.out.println("El usuario se ha cancelado con exito");
+			}
+			updateUser(u);
+		}
+		return existe;
+	}
+	
+	private boolean existeUsuario(long id) {
+		List<User> usuarios = getUsers();
+		for (User u : usuarios) {
+			if (u.getId() == id) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

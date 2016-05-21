@@ -22,7 +22,7 @@ public class Sdi3ServicesRestImpl implements Sdi3ServicesRest{
 	
 	@Override
 	public User buscarUsuario(String login,String password) {
-		return serviceU.buscaUsuario(login,password);
+		return serviceU.buscaUsuarioPass(login,password);
 	}
 	
 	

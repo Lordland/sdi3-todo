@@ -1,7 +1,5 @@
 package uo.sdi.client;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import alb.util.console.Console;
@@ -10,197 +8,139 @@ import uo.sdi.business.RatingService;
 import uo.sdi.business.TripService;
 import uo.sdi.business.UserService;
 import uo.sdi.business.impl.RemoteEJBServicesLocator;
-import uo.sdi.model.ListaApuntados;
 import uo.sdi.model.Rating;
 import uo.sdi.model.Trip;
 import uo.sdi.model.User;
-import uo.sdi.model.UserStatus;
 
 public class Main {
 	private static String mensaje = "Opciones: \n\t1.Listar usuarios y viajes "
 			+ "promovidos y apuntados\n\t2.Excluir usuario\n\t3.Listar "
 			+ "comentarios y puntuaciones\n\t4.Eliminar comentarios y "
 			+ "puntuaciones\n\t0.Salir";
-	
+
 	private static void run() throws Exception {
-		while(true){
+		while (true) {
 			System.out.println(mensaje);
-			Integer opcion = Console.readInt("Diga su opcion: "); 
-			if(opcion == null){
+			Integer opcion = Console.readInt("Diga su opcion: ");
+			if (opcion == null) {
 				System.out.println("Por favor elija una de las opciones");
-			}
-			else if(opcion == 1){
+			} else if (opcion == 1) {
 				mostrarDatos();
-			}
-			else if(opcion == 2){
+			} else if (opcion == 2) {
 				cancelarUsuario();
-			}
-			else if(opcion == 3){//TODO no estan ordenados de mas reciente a menos
+			} else if (opcion == 3) {
+				// TODO no estan ordenados de mas reciente
+				// a menos
 				listar();
-			}
-			else if(opcion == 4){
+			} else if (opcion == 4) {
 				borrarRatings();
-			}
-			else if(opcion == 0){
+			} else if (opcion == 0) {
 				return;
-			}
-			else{
+			} else {
 				System.out.println("Error, vuelva a mirar las opciones "
 						+ "disponibles");
 			}
 		}
 	}
-	
-	
-	private static void listar(){
+
+	private static void listar() {
 		TripService serviceT = new RemoteEJBServicesLocator().getTripService();
-		List<Trip> trips = serviceT.listarViajes();
-		List<Trip> tr = new ArrayList<Trip>();
-		Date d = new Date();
-		d.setTime(d.getTime() + 30 * 1000 * 60 * 60 * 24);
-		for(Trip t : trips){
-			if(t.getDepartureDate().compareTo(d) < 0){
-				tr.add(t);
-			}
-		}
-		for(Trip t : tr){
-			System.out.println("Viaje: " + t.getId() + " salida: " + 
-					t.getDeparture().getCity() +	" destino: " 
+		// Resumir en ListarViajesConUnMesDeAntelacion
+		List<Trip> viajes = serviceT.listarViajesUltimoMes();
+		for (Trip t : viajes) {
+			System.out.println("Viaje: " + t.getId() + " salida: "
+					+ t.getDeparture().getCity() + " destino: "
 					+ t.getDestination().getCity());
-			RatingService service = new RemoteEJBServicesLocator().getRatingService();
-			List<Rating> ratings = service.listarComentarios(t);
-			for(Rating r : ratings){
+			List<Rating> ratings = new RemoteEJBServicesLocator()
+					.getRatingService().listarComentarios(t);
+			for (Rating r : ratings) {
 				User u1 = new RemoteEJBServicesLocator().getUserService()
 						.findById(r.getSeatFromUserId());
 				User u2 = new RemoteEJBServicesLocator().getUserService()
 						.findById(r.getSeatAboutUserId());
-				System.out.println("\t"+t.getDestination() + " " + 
-						u1.getName() + " " + u2.getName() + " " + r.getValue()
-						+ "\n\t" + r.getComment());
+				System.out.println("\t" + t.getDestination() + " "
+						+ u1.getName() + " " + u2.getName() + " "
+						+ r.getValue() + "\n\t" + r.getComment());
 			}
 		}
 	}
-	
-	
-	
-	private static List<Rating> listaRatings(){
-		RatingService service = new RemoteEJBServicesLocator().getRatingService();
+
+	private static void listaRatings() {
+		RatingService service = new RemoteEJBServicesLocator()
+				.getRatingService();
 		List<Rating> ratings = service.listarRatings();
-		for(Rating r : ratings){
-			System.out.println(r.getId() + " " + r.getSeatFromTripId() + 
-					" " + r.getSeatFromUserId());
+		for (Rating r : ratings) {
+			System.out.println(r.getId() + " " + r.getSeatFromTripId() + " "
+					+ r.getSeatFromUserId());
 		}
-		return ratings;
 	}
-	
-	private static void borrarRatings(){
-		while(true){
+
+	private static void borrarRatings() {
+		while (true) {
 			System.out.println("Lista de ratings: ");
-			List<Rating> r = listaRatings();
+			listaRatings();
 			Long id = Console.readLong("Seleccione el id del rating "
 					+ "que desee borrar o 0 para salir");
-			for(Rating rat : r){
-				if(id != null && rat.getId().equals(id)){
-					new RemoteEJBServicesLocator().getRatingService()
-					.eliminarComentarios(rat.getId());
-					System.out.println("Rating borrado");
-					return;
-				}
-			}
-			if(id == 0L){
+			if (id == 0L) {
 				return;
+			} else {
+				System.out
+						.println("Error, por favor introduzca un id de la lista");
 			}
-			System.out.println("Error, por favor introduzca un id de la lista");
+			new RemoteEJBServicesLocator().getRatingService().borrarRating(id);
+			System.out.println("Rating borrado");
+			return;
 		}
 	}
-	
-	private static void cancelarUsuario(){
-		while(true){
+
+	private static void cancelarUsuario() {
+		while (true) {
 			System.out.println("Usuarios disponibles: ");
 			mostrarUsuarios();
-			Long idUsuario = Console.readLong("Seleccione el id del usuario o 0 para salir: ");
-			if(idUsuario!=null && existeUsuario(idUsuario)){
-				UserService userS = new RemoteEJBServicesLocator()
-				.getUserService();
-				User u = userS.findById(idUsuario);
-				u.setStatus(UserStatus.CANCELLED);
-				ApplicationService service = new RemoteEJBServicesLocator()
-				.getApplicationService();
-				List<ListaApuntados> user = service.listaApuntadosUsuario(u);
-				for(ListaApuntados l : user){
-					service.cancelarUsuario(l);
-					System.out.println("El usuario se ha cancelado con exito");
-				}
-				userS.updateUser(u);
+			Long idUsuario = Console
+					.readLong("Seleccione el id del usuario o 0 para salir: ");
+			if (idUsuario == 0L) {
 				return;
 			}
-			if(idUsuario == 0L){
-				return;
-			}
-			else{
+			boolean borrado = new RemoteEJBServicesLocator().getUserService()
+					.darDeBajaUsuario(idUsuario);
+			if (!borrado) {
 				System.out.println("El usuario no existe, "
 						+ "elija uno de la lista");
+			} else {
+				System.out.println("Usuario borrado satisfactoriamente");
 			}
+			return;
+
 		}
 	}
-	
-	private static boolean existeUsuario(long id){
-		List<User> usuarios = getUsuarios();
-		for(User u : usuarios){
-			if(u.getId() == id){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private static int listaViajePromotor(long id) {
-		List<Trip> viajes = new RemoteEJBServicesLocator()
-		.getTripService().listarViajes();
-		List<Trip> aux = new ArrayList<Trip>();
-		for (Trip t : viajes) {
-			if (t.getPromoterId().equals(id)) {
-				aux.add(t);
-			}
-		}
-		return aux.size();
-	}
-	
-	private static void mostrarUsuarios(){
-		List<User> u = getUsuarios();
-		for(User us : u){
-			System.out.println("Id: "+ us.getId() + " nombre: "
-					+ us.getName() + " apellido" +us.getSurname());
+
+	private static void mostrarUsuarios() {
+		UserService service = new RemoteEJBServicesLocator().getUserService();
+		List<User> u = service.getUsers();
+		for (User us : u) {
+			System.out.println("Id: " + us.getId() + " nombre: " + us.getName()
+					+ " apellido" + us.getSurname());
 		}
 	}
-	
-	private static int listaViajeUsuario(User u) {
-		ApplicationService service = new RemoteEJBServicesLocator()
-		.getApplicationService();
-		List<ListaApuntados> user = service.listaApuntadosUsuario(u);
-		return user.size();
-	}
-	
-	private static List<User> getUsuarios(){
-		UserService service = new RemoteEJBServicesLocator()
-		.getUserService();
-		return service.getUsers();
-	}
-	
-	private static void mostrarDatos(){
-		List<User> user = getUsuarios();
+
+	private static void mostrarDatos() {
+		UserService service = new RemoteEJBServicesLocator().getUserService();
+		TripService serviceT = new RemoteEJBServicesLocator().getTripService();
+		ApplicationService serviceA = new RemoteEJBServicesLocator()
+				.getApplicationService();
+		List<User> user = service.getUsers();
 		for (User u : user) {
-			int listaP = listaViajePromotor(u.getId());
-			int listaA = listaViajeUsuario(u);
-			System.out.println("Usuario: " + u.getName() + " " + u.getSurname() 
-					+ " "+ u.getEmail() );
+			int listaP = serviceT.listaViajePromotor(u.getId()).size();
+			int listaA = serviceA.listaApuntadosUsuario(u).size();
+			System.out.println("Usuario: " + u.getName() + " " + u.getSurname()
+					+ " " + u.getEmail());
 			System.out.println("\tPromovio: " + listaP + " viajes");
 			System.out.println("\tSe apunto a: " + listaA + " viajes");
 		}
 	}
 
-	
-	public static void main(String [ ] args) throws Exception{
+	public static void main(String[] args) throws Exception {
 		run();
 	}
 }
