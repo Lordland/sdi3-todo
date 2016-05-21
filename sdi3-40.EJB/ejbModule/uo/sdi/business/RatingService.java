@@ -12,5 +12,7 @@ public interface RatingService {
 	public void eliminarComentarios(Long id);
 	
 	public List<Rating> listarRatings();
+
+	public void borrarRating(Long id);
 	
 }

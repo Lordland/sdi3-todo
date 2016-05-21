@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import uo.sdi.model.ListaApuntados;
 import uo.sdi.model.Trip;
-import uo.sdi.model.User;
+import uo.sdi.model.User; 
 
 @Path("/Sdi3ServicesRest")
 public interface Sdi3RestService {
@@ -37,12 +37,12 @@ public interface Sdi3RestService {
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	void actualizarViajeId(@PathParam("id") Long id);
 	
-	@POST
+	@GET
 	@Path("/buscarViaje/{id}")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	Trip buscarViaje(@PathParam("id") Long id);
 	
-	@GET
+	@POST
 	@Path("/listarApuntados")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -52,7 +52,7 @@ public interface Sdi3RestService {
 	@Path("/cancelar")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	void cancelarUsuario(ListaApuntados apuntado);
-	
+	 
 	@POST
 	@Path("/aceptar")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

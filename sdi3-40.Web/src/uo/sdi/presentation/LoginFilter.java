@@ -62,7 +62,7 @@ public class LoginFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		HttpSession session = req.getSession();
-		if (session.getAttribute("LOGGEDIN_USER") == null) { //TODO buscar en 
+		if (session.getAttribute("LOGGEDIN_USER") == null && !req.getPathInfo().contains("/Sdi3ServicesRest/")) { //TODO buscar en 
 			//cabecera usuario y contraseña y que coincida con uno de la base de datos
 			String loginForm = config.getInitParameter("Inicio");
 			// Si no hay login, redirección al formulario de login
