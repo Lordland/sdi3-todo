@@ -1,5 +1,6 @@
 package uo.sdi.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jms.Connection;
@@ -13,6 +14,10 @@ import javax.jms.TextMessage;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 import alb.util.console.Console;
+import uo.sdi.infraestructure.Factory;
+import uo.sdi.model.ListaApuntados;
+import uo.sdi.model.ListaApuntados.PeticionEstado;
+import uo.sdi.model.SeatStatus;
 import uo.sdi.model.Trip;
 import uo.sdi.model.User;
 import uo.sdi.util.Jndi;
@@ -31,14 +36,18 @@ public class Main {
 	private MessageProducer sender;
 
 	public static void main(String[] args) throws JMSException {
-		new Main().run();
+		Main main = new Main();
+		main.run();
 	}
 
-	private void run() throws JMSException {
+	private Main(){
 		client = new ResteasyClientBuilder().build()
 				.register(new Authenticator("sdi", "password"))
 				.target("http://localhost:8280/sdi3-40.Web/rest/")
 				.proxy(Sdi3ServiceRest.class);
+	}
+	
+	private void run() throws JMSException {
 		initialize();
 		String login = Console.readString("Introduzca su login:");
 		String password = Console.readString("Introduzca su password:");
@@ -47,6 +56,7 @@ public class Main {
 		while(true){
 			mostrarViajes();
 			Long id = Console.readLong("Seleccione uno de los id de la lista");
+			viaje = client.buscarViaje(id);
 			if(idCorrecto(id)){
 				viaje = client.buscarViaje(id);
 				break;
@@ -56,21 +66,20 @@ public class Main {
 						+ "id de la lista");
 			}
 		}
-		
-		//metodo para mostrar los viajes de los que es promotor y en los que
-		//participa "List<Trip> l = listaViajesParticipados()"
-		//luego se hace comprobacion de que el id se encuentre en la lista
-		//se acepta el id y se saca el viaje y entonces se puede enviar msgs
-		//al chat de ese viaje (aunque ni idea de momento de como se hace,
-		//a las 10 o asi santi llegara de nuevo)		
+	
 		TextMessage msg = session.createTextMessage();
 		msg.setText("");
-		while(!msg.equals("exit")){
+		System.out.println("Bienvenido al chat del viaje con id " 
+				+ viaje.getId() + " y Origen-Destino: " + viaje.getDeparture()
+				.getCity() + "-"+ viaje.getDestination().getCity() + ": ");
+		while(!msg.getText().equals("exit")){
 			msg = createMessage(cliente.getId(), viaje.getId());
 			sender.send(msg);
 		}
+		System.out.println("Fin del chat.");
 		close();
 	}
+	
 
 	private void mostrarViajes() {
 		for(Trip t : viajes){
@@ -80,7 +89,12 @@ public class Main {
 	}
 	
 	private boolean idCorrecto(Long id){
-		return true;
+		for(Trip t : viajes){
+			if(t.getId().equals(id)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void close(){
