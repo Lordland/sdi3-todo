@@ -60,8 +60,8 @@ public interface Sdi3ServicesRest {
 	void aceptarUsuario(ListaApuntados apuntado) throws EntityNotFoundException;
 	
 	@GET
-	@Path("/listarViajesPromotorParticipado")
+	@Path("/listarViajesPromotorParticipado/{id}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	List<Trip> listarViajesPromotorParticipado(Long idUsuario);
+	List<Trip> listarViajesPromotorParticipado(@PathParam("id") Long idUsuario);
 	
 }
