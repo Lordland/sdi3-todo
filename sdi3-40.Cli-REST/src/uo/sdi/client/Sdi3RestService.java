@@ -34,12 +34,11 @@ public interface Sdi3RestService {
 	
 	@POST
 	@Path("/actualizarViajeId/{id}")
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	void actualizarViajeId(@PathParam("id") Long id);
 	
 	@GET
 	@Path("/buscarViaje/{id}")
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	Trip buscarViaje(@PathParam("id") Long id);
 	
 	@POST
@@ -57,5 +56,6 @@ public interface Sdi3RestService {
 	@Path("/aceptar")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	void aceptarUsuario(ListaApuntados apuntado);
+	
 	
 }
