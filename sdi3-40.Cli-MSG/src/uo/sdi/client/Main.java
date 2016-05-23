@@ -7,6 +7,8 @@ import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
@@ -14,15 +16,9 @@ import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicSession;
-import javax.jms.TopicSubscriber;
 import javax.naming.NamingException;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-
-
-
-
-
 
 import alb.util.console.Console;
 import uo.sdi.model.Trip;
@@ -44,8 +40,9 @@ public class Main {
 	private TopicConnection tConn = null;
 	private TopicSession tSession = null;
 	private Topic topic = null;
+	private MessageConsumer consumer;
 
-	public static void main(String[] args) throws JMSException, NamingException {
+	public static void main(String[] args) throws JMSException, NamingException, InterruptedException {
 		Main main = new Main();
 		main.run();
 	}
@@ -57,7 +54,7 @@ public class Main {
 				.proxy(Sdi3ServiceRest.class);
 	}
 
-	private void run() throws JMSException, NamingException {
+	private void run() throws JMSException, NamingException, InterruptedException {
 		initialize();
 		String login = Console.readString("Introduzca su login:");
 		String password = Console.readString("Introduzca su password:");
@@ -76,16 +73,17 @@ public class Main {
 			}
 		}
 
-		TextMessage msg = session.createTextMessage();
-		msg.setText("");
+		Message msg = session.createTextMessage();
+		msg.setStringProperty("mensaje", "");
 		System.out.println("Bienvenido al chat del viaje con id "
 				+ viaje.getId() + " y Origen-Destino: "
 				+ viaje.getDeparture().getCity() + "-"
 				+ viaje.getDestination().getCity() + ": ");
-		while (!msg.getText().equals("exit")) {
+		while (!msg.getStringProperty("mensaje").equals("exit")) {
 			msg = createMessage(cliente.getId(), viaje.getId());
 			sender.send(msg);
 			showMessage();
+
 		}
 		System.out.println("Fin del chat.");
 		close();
@@ -118,18 +116,7 @@ public class Main {
 		}
 	}
 
-	private void showMessage() {
-		try {
-			TopicSubscriber recv = tSession.createSubscriber(topic);
-			Message recibir = recv.receive();
-		        if (recibir == null) {
-		            System.out.println("Timed out waiting for msg");
-		        } else {
-		            System.out.println("TopicSubscriber.recv, msgt="+recibir.getStringProperty("mensaje"));
-		        }
-		} catch (JMSException e) {
-			System.err.println("Error al intentar mostrar el mensaje");
-		}
+	private void showMessage() throws NamingException {
 	}
 
 	private void initialize() throws JMSException, NamingException {
@@ -141,6 +128,7 @@ public class Main {
 		sender = session.createProducer(queue);
 		con.start();
 		setupPubSub();
+		
 	}
 
 	private TextMessage createMessage(Long idUser, Long idTrip)
@@ -155,12 +143,34 @@ public class Main {
 
 	public void setupPubSub() throws JMSException, NamingException {
 		// ... specify the JNDI properties specific to the vendor
-		TopicConnectionFactory tcf = 
-				(TopicConnectionFactory) Jndi.find(JMS_CONNECTION_FACTORY);
-		tConn = tcf.createTopicConnection("sdi","password");
+		TopicConnectionFactory tcf = (TopicConnectionFactory) Jndi
+				.find(JMS_CONNECTION_FACTORY);
+		tConn = tcf.createTopicConnection("sdi", "password");
 		topic = (Topic) Jndi.find(SDI3TOPIC);
 		tSession = tConn.createTopicSession(false,
 				TopicSession.AUTO_ACKNOWLEDGE);
+		consumer = tSession.createConsumer(topic);
+		TextListener listener = new TextListener();
+		consumer.setMessageListener(listener);
 		tConn.start();
+	}
+
+	public class TextListener implements MessageListener {
+		@Override
+		public void onMessage(Message message) {
+			Message msg = null;
+			try {
+				msg = message;
+				if (msg.getStringProperty("usuario").equals(cliente.getLogin()))
+					System.out.println("Reading message: "
+							+ msg.getStringProperty("mensaje"));
+			} catch (JMSException e) {
+				System.out.println("JMSException in onMessage(): "
+						+ e.toString());
+			} catch (Throwable t) {
+				System.out
+						.println("Exception in onMessage():" + t.getMessage());
+			}
+		}
 	}
 }
