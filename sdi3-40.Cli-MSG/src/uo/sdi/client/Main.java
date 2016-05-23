@@ -161,9 +161,15 @@ public class Main {
 			Message msg = null;
 			try {
 				msg = message;
-				if (msg.getStringProperty("usuario").equals(cliente.getLogin()))
-					System.out.println("Reading message: "
-							+ msg.getStringProperty("mensaje"));
+				String idU = msg.getStringProperty("usuarios");
+				String[] s = idU.split(",");
+				Long idT = msg.getLongProperty("viaje");
+				for(int i=0;i<s.length;i++){
+					if (s[i].equals(cliente.getId()+"") 
+							&& idT.equals(viaje.getId()))
+						System.out.println("Reading message: "
+								+ msg.getStringProperty("mensaje"));
+				}
 			} catch (JMSException e) {
 				System.out.println("JMSException in onMessage(): "
 						+ e.toString());
