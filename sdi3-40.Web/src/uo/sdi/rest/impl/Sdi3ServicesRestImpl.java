@@ -13,7 +13,6 @@ import uo.sdi.model.ListaApuntados;
 import uo.sdi.model.SeatStatus;
 import uo.sdi.model.Trip;
 import uo.sdi.model.User;
-import uo.sdi.model.ListaApuntados.PeticionEstado;
 import uo.sdi.rest.Sdi3ServicesRest;
 
 public class Sdi3ServicesRestImpl implements Sdi3ServicesRest{
