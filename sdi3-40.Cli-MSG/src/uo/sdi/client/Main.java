@@ -22,6 +22,8 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 
 
+
+
 import alb.util.console.Console;
 import uo.sdi.model.Trip;
 import uo.sdi.model.User;
@@ -81,9 +83,9 @@ public class Main {
 				+ viaje.getDeparture().getCity() + "-"
 				+ viaje.getDestination().getCity() + ": ");
 		while (!msg.getText().equals("exit")) {
-			showMessage(msg);
 			msg = createMessage(cliente.getId(), viaje.getId());
 			sender.send(msg);
+			showMessage();
 		}
 		System.out.println("Fin del chat.");
 		close();
@@ -116,14 +118,14 @@ public class Main {
 		}
 	}
 
-	private void showMessage(TextMessage msg) {
+	private void showMessage() {
 		try {
 			TopicSubscriber recv = tSession.createSubscriber(topic);
-			Message recibir = recv.receive(5000);
+			Message recibir = recv.receive();
 		        if (recibir == null) {
 		            System.out.println("Timed out waiting for msg");
 		        } else {
-		            System.out.println("TopicSubscriber.recv, msgt="+recibir);
+		            System.out.println("TopicSubscriber.recv, msgt="+recibir.getStringProperty("mensaje"));
 		        }
 		} catch (JMSException e) {
 			System.err.println("Error al intentar mostrar el mensaje");
@@ -147,7 +149,7 @@ public class Main {
 		msg.setLongProperty("usuario", idUser);
 		msg.setLongProperty("viaje", idTrip);
 		String t = Console.readString();
-		msg.setText(t);
+		msg.setStringProperty("mensaje", t);
 		return msg;
 	}
 

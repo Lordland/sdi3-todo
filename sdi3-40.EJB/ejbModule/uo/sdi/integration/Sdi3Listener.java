@@ -1,15 +1,18 @@
 package uo.sdi.integration;
 
+
 import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import javax.jms.Session;
+import javax.jms.TemporaryTopic;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
+import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ejb.ActivationConfigProperty;
@@ -22,9 +25,13 @@ import javax.ejb.ActivationConfigProperty;
 			)
 public class Sdi3Listener  implements MessageListener{
 
-	private TopicConnection tConn = null;
-	private TopicSession tSession = null;
-	private Topic topic = null;
+	private TopicConnection connect = null;
+	private TopicSession pubSession = null;
+	private TopicSession subSession = null;
+	private TopicPublisher publisher = null;
+	private TopicSubscriber subscriber = null;
+	private Topic hotDealsTopic = null;
+	private TemporaryTopic buyOrdersTopic = null;
 
 	@Override
 	public void onMessage(Message msg) {
@@ -39,36 +46,54 @@ public class Sdi3Listener  implements MessageListener{
 
 	private void process(Message msg) throws JMSException, NamingException {
 		if(msg != null){
-			sendAsync("recibido DAAAAA");
+			sendAsync(msg);
 		}
 		
 	}
 	
 	public void setupPubSub() throws JMSException, NamingException {
-		// ... specify the JNDI properties specific to the vendor
-		InitialContext iniCtx = new InitialContext();
-		TopicConnectionFactory tcf = 
-				(TopicConnectionFactory)iniCtx.lookup("jms/RemoteConnectionFactory");
-		tConn = tcf.createTopicConnection("sdi","password");
-		topic = (Topic) iniCtx.lookup("jms/topic/Sdi3Topic");
-		tSession = tConn.createTopicSession(false,
-				TopicSession.AUTO_ACKNOWLEDGE);
-		tConn.start();
+		try {
+	         //Properties env = new Properties( );
+	         // ... specify the JNDI properties specific to the vendor
+	         
+	         InitialContext jndi = new InitialContext(/*env*/);
+	                  
+	         TopicConnectionFactory factory = 
+	          (TopicConnectionFactory)jndi.lookup("ConnectionFactory");
+	         connect = factory.createTopicConnection ("sdi", "password");
+
+	         pubSession = 
+	          connect.createTopicSession(false,Session.AUTO_ACKNOWLEDGE);
+	         subSession = 
+	          connect.createTopicSession(false,Session.AUTO_ACKNOWLEDGE);
+	         
+	         hotDealsTopic = (Topic)jndi.lookup("topic/Sdi3Topic");
+	         publisher = pubSession.createPublisher(hotDealsTopic);
+
+	         buyOrdersTopic = subSession.createTemporaryTopic( );
+
+	         subscriber = subSession.createSubscriber(buyOrdersTopic);
+	         subscriber.setMessageListener(this);
+	         
+	         connect.start( );
+	         
+	      } catch (javax.jms.JMSException jmse){
+	         jmse.printStackTrace( ); System.exit(1);
+	      } catch (javax.naming.NamingException jne){
+	         jne.printStackTrace( ); System.exit(1);
+	      }
 	}
 	
-	public void sendAsync(String text)
+	public void sendAsync(Message msg)
 	        throws JMSException, NamingException
 	    {
-	        System.out.println("Begin sendAsync");
 	        // Setup the pub/sub connection, session
 	        setupPubSub();
-	        // Send a text msg
-	        TopicPublisher send = tSession.createPublisher(topic);
-	        TextMessage tm = tSession.createTextMessage(text);
-	        send.publish(tm);
-	        System.out.println("sendAsync, sent text=" +  tm.getText());
-	        send.close();
-	        System.out.println("End sendAsync");
+	        // Enviar el mensaje a publisher, con el id del viaje y el id de los
+	        // usuarios promotores/apuntados para que lo filtre el cliente
+	        Message tm = subSession.createMessage();
+	        tm.setStringProperty("mensaje", msg.getStringProperty("mensaje"));
+	        publisher.publish(tm);
 	    }
 
 }
