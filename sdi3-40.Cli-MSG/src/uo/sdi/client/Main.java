@@ -15,7 +15,6 @@ import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -154,11 +153,10 @@ public class Main {
 
 	public void setupPubSub() throws JMSException, NamingException {
 		// ... specify the JNDI properties specific to the vendor
-		InitialContext iniCtx = new InitialContext();
 		TopicConnectionFactory tcf = 
-				(TopicConnectionFactory)iniCtx.lookup(JMS_CONNECTION_FACTORY);
+				(TopicConnectionFactory) Jndi.find(JMS_CONNECTION_FACTORY);
 		tConn = tcf.createTopicConnection("sdi","password");
-		topic = (Topic) iniCtx.lookup(SDI3TOPIC);
+		topic = (Topic) Jndi.find(SDI3TOPIC);
 		tSession = tConn.createTopicSession(false,
 				TopicSession.AUTO_ACKNOWLEDGE);
 		tConn.start();

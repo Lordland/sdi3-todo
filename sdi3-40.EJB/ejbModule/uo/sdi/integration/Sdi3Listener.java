@@ -16,9 +16,9 @@ import javax.ejb.ActivationConfigProperty;
 
 
 @MessageDriven(
-		mappedName="jms/Queue", activationConfig =  {
+		activationConfig =  {
 		        @ActivationConfigProperty(propertyName = "destination",
-                        propertyValue = "topic/Sdi3Topic")}
+                        propertyValue = "queue/Sdi3Queue")}
 			)
 public class Sdi3Listener  implements MessageListener{
 
