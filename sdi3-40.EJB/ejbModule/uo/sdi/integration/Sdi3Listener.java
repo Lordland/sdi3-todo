@@ -1,5 +1,8 @@
 package uo.sdi.integration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -15,6 +18,10 @@ import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ejb.ActivationConfigProperty;
+
+import uo.sdi.infraestructure.Factory;
+import uo.sdi.model.Application;
+import uo.sdi.model.Trip;
 
 @MessageDriven(activationConfig = { @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/Sdi3Queue") })
 public class Sdi3Listener implements MessageListener {
@@ -85,8 +92,37 @@ public class Sdi3Listener implements MessageListener {
 		setupPubSub();
 		// Enviar el mensaje a publisher, con el id del viaje y el id de los
 		// usuarios promotores/apuntados para que lo filtre el cliente
-			Message tm = subSession.createMessage();
-			tm.setStringProperty("mensaje", msg.getStringProperty("mensaje"));
-			publisher.publish(tm);
+		Long id = msg.getLongProperty("viaje");
+		String s = getIds(msg);
+		Message tm = subSession.createMessage();
+        tm.setLongProperty("viaje", id);
+        tm.setStringProperty("usuarios", s);
+        tm.setStringProperty("mensaje", msg.getStringProperty("mensaje"));
+        publisher.publish(tm);
+	}
+	
+	
+	private String getIds(Message msg) throws JMSException{
+		Long id = msg.getLongProperty("viaje");
+        List<String> s = new ArrayList<String>();
+        List<Application> a = Factory.services.getApplicationService()
+        		.getApplication();
+        Trip t = Factory.services.getTripService().buscarViaje(id);
+        for(Application ap : a){
+        	if(ap.getTripId().equals(id)){
+        		s.add(""+ap.getUserId());
+        	}
+        }
+        s.add(""+t.getPromoterId());
+        String cadena= "";
+        for(int i=0;i<s.size();i++){
+        	if(i == s.size()-1){
+        		cadena = cadena + s.get(i);
+        	}
+        	else{
+        		cadena = cadena + s.get(i) + ",";
+        	}
+        }
+        return cadena;
 	}
 }
