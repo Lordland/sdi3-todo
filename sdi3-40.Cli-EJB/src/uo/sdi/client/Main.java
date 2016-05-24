@@ -1,5 +1,7 @@
 package uo.sdi.client;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import alb.util.console.Console;
@@ -29,8 +31,6 @@ public class Main {
 			} else if (opcion == 2) {
 				cancelarUsuario();
 			} else if (opcion == 3) {
-				// TODO no estan ordenados de mas reciente
-				// a menos
 				listar();
 			} else if (opcion == 4) {
 				borrarRatings();
@@ -45,7 +45,7 @@ public class Main {
 
 	private static void listar() {
 		TripService serviceT = new RemoteEJBServicesLocator().getTripService();
-		// Resumir en ListarViajesConUnMesDeAntelacion
+
 		List<Trip> viajes = serviceT.listarViajesUltimoMes();
 		for (Trip t : viajes) {
 			System.out.println("Viaje: " + t.getId() + " salida: "
@@ -58,9 +58,11 @@ public class Main {
 						.findById(r.getSeatFromUserId());
 				User u2 = new RemoteEJBServicesLocator().getUserService()
 						.findById(r.getSeatAboutUserId());
-				System.out.println("\t" + t.getDestination() + " "
-						+ u1.getName() + " " + u2.getName() + " "
-						+ r.getValue() + "\n\t" + r.getComment());
+				System.out.println("\tDestino: " + t.getDestination().getCity()
+						+ " Comentario de: "+ u1.getName() 
+						+ " Hacia: " + u2.getName()+" \n\t\tValoracion: "
+						+r.getValue() + "\n\t\tComentario: " 
+						+ r.getComment() +"\n");
 			}
 		}
 	}
@@ -81,15 +83,16 @@ public class Main {
 			listaRatings();
 			Long id = Console.readLong("Seleccione el id del rating "
 					+ "que desee borrar o 0 para salir");
-			if (id == 0L) {
-				return;
-			} else {
+			if (id.equals(null)) {
 				System.out
-						.println("Error, por favor introduzca un id de la lista");
+				.println("Error, por favor introduzca un id de la lista");
+			}else if(id.equals(0)){
+				return;
+			}else {
+				new RemoteEJBServicesLocator().getRatingService().borrarRating(id);
+				System.out.println("Rating borrado");
+				return;
 			}
-			new RemoteEJBServicesLocator().getRatingService().borrarRating(id);
-			System.out.println("Rating borrado");
-			return;
 		}
 	}
 
