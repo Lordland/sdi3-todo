@@ -43,12 +43,8 @@ public class EJBRatingService implements LocalRatingService,RemoteRatingService{
 		List<Rating> r = listarRatings();
 		for(Rating rat : r){
 			if(id != null && rat.getId().equals(id)){
-				new RemoteEJBServicesLocator().getRatingService()
-				.eliminarComentarios(rat.getId());
+				eliminarComentarios(rat.getId());
 			}
 		}
 	}
-	
-	
-
 }

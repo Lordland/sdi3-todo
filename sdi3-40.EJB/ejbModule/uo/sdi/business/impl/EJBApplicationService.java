@@ -30,7 +30,6 @@ public class EJBApplicationService implements LocalApplicationService,
 			Seat s = new Seat();
 			SeatDao sd = PersistenceFactory.newSeatDao();
 			TripDao td = PersistenceFactory.newTripDao();
-			// Añadido en BD
 			Long ids[] = { apuntado.getUsuario().getId(),
 					apuntado.getViaje().getId() };
 			Seat seat = sd.findById(ids);
@@ -205,7 +204,10 @@ public class EJBApplicationService implements LocalApplicationService,
 					}
 				}
 				a.setRelacionViaje();
-				lista.add(a);
+				if(a.getRelacionViaje().equals(PeticionEstado.EXCLUDED)
+						|| a.getRelacionViaje().equals(PeticionEstado.PENDANT)){
+					lista.add(a);
+				}
 			}
 		}
 		return lista;

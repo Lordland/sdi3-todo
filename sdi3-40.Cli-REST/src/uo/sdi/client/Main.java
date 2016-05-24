@@ -74,8 +74,15 @@ public class Main {
 			if (v.isEmpty()) {
 				System.out.println("Este usuario no ha promovido ningun viaje");
 			}
-
-			seleccionaViaje(v);
+			int x = Console.readInt("Si desea salir introduzca 0, sino "
+					+ "introduzca lo que quiera");
+			if(x != 0){
+				seleccionaViaje(v);
+			}
+			else{
+				System.out.println("Hasta la proxima");
+				return;
+			}
 			
 		}
 	}
@@ -85,13 +92,13 @@ public class Main {
 			Long id = Console.readLong("Si desea salir de sesion"
 					+ " introduzca 0, de otra forma introduzca "
 					+ "el id de uno de los viajes de la lista");
-			if (id.equals(0L)) {
-				System.exit(0);
+			if (id.equals(new Long(0))) {
+				return;
 			}
 			for (Trip t : v) {
 				if (t.getId().equals(id)) {
 					listarApuntados(id);
-					break;
+					return;
 				}
 			}
 			System.out
@@ -103,6 +110,9 @@ public class Main {
 	private void listarApuntados(Long id) {
 		Trip t = client.buscarViaje(id);
 		List<ListaApuntados> v = client.listarApuntadosAUnViaje(t);
+		if(v.isEmpty()){
+			System.out.println("Ningun usuario a pedido plaza en este viaje");
+		}
 		for (ListaApuntados l : v) {
 			System.out.println("\tUsuario: Id=" + l.getUsuario().getId()
 					+ " Nombre=" + l.getUsuario().getName() + " Apellido="
@@ -116,20 +126,20 @@ public class Main {
 					+ "quiera aceptar en el viaje. 0 para salir");
 			if (idUs.equals(null)) {
 				System.out.println("Error, elija un id de los de la lista");
-			} else {
+			}
+			if (idUs.equals(new Long(0))) {
+				System.out.println("Ha decidido salir. Hasta la próxima");
+				return;
+			}
+			else {
 				for (ListaApuntados l : v) {
 					if (l.getUsuario().getId().equals(idUs)) {
 						client.aceptarUsuario(l);
 						break;
 					}
 				}
-				System.out
-						.println("El id que ha introducido no está en la lista. Por favor, introduzca uno de la lista.");
-				if (idUs.equals(0L)) {
-					System.out
-							.println("Ha decidido salir. Hasta la próxima :)");
-					break;
-				}
+				System.out.println("El id que ha introducido no está en "
+						+ "la lista. Por favor, introduzca uno de la lista.");
 
 			}
 		}
