@@ -29,6 +29,8 @@ public partial class EJBRatingServiceService : System.Web.Services.Protocols.Soa
     
     private System.Threading.SendOrPostCallback listarRatingsOperationCompleted;
     
+    private System.Threading.SendOrPostCallback borrarRatingOperationCompleted;
+    
     private System.Threading.SendOrPostCallback listarComentariosOperationCompleted;
     
     private System.Threading.SendOrPostCallback eliminarComentariosOperationCompleted;
@@ -40,6 +42,9 @@ public partial class EJBRatingServiceService : System.Web.Services.Protocols.Soa
     
     /// <remarks/>
     public event listarRatingsCompletedEventHandler listarRatingsCompleted;
+    
+    /// <remarks/>
+    public event borrarRatingCompletedEventHandler borrarRatingCompleted;
     
     /// <remarks/>
     public event listarComentariosCompletedEventHandler listarComentariosCompleted;
@@ -83,6 +88,48 @@ public partial class EJBRatingServiceService : System.Web.Services.Protocols.Soa
         if ((this.listarRatingsCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.listarRatingsCompleted(this, new listarRatingsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+    public void borrarRating([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] long arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] [System.Xml.Serialization.XmlIgnoreAttribute()] bool arg0Specified) {
+        this.Invoke("borrarRating", new object[] {
+                    arg0,
+                    arg0Specified});
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginborrarRating(long arg0, bool arg0Specified, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("borrarRating", new object[] {
+                    arg0,
+                    arg0Specified}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public void EndborrarRating(System.IAsyncResult asyncResult) {
+        this.EndInvoke(asyncResult);
+    }
+    
+    /// <remarks/>
+    public void borrarRatingAsync(long arg0, bool arg0Specified) {
+        this.borrarRatingAsync(arg0, arg0Specified, null);
+    }
+    
+    /// <remarks/>
+    public void borrarRatingAsync(long arg0, bool arg0Specified, object userState) {
+        if ((this.borrarRatingOperationCompleted == null)) {
+            this.borrarRatingOperationCompleted = new System.Threading.SendOrPostCallback(this.OnborrarRatingOperationCompleted);
+        }
+        this.InvokeAsync("borrarRating", new object[] {
+                    arg0,
+                    arg0Specified}, this.borrarRatingOperationCompleted, userState);
+    }
+    
+    private void OnborrarRatingOperationCompleted(object arg) {
+        if ((this.borrarRatingCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.borrarRatingCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
     
@@ -353,6 +400,7 @@ public partial class rating {
         }
     }
 }
+
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
 public delegate void listarRatingsCompletedEventHandler(object sender, listarRatingsCompletedEventArgs e);
@@ -378,6 +426,10 @@ public partial class listarRatingsCompletedEventArgs : System.ComponentModel.Asy
         }
     }
 }
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+public delegate void borrarRatingCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]

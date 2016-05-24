@@ -27,15 +27,21 @@ using System.Xml.Serialization;
 [System.Web.Services.WebServiceBindingAttribute(Name="EJBTripServiceServiceSoapBinding", Namespace="http://impl.business.sdi.uo/")]
 public partial class EJBTripServiceService : System.Web.Services.Protocols.SoapHttpClientProtocol {
     
+    private System.Threading.SendOrPostCallback creaViajeOperationCompleted;
+    
     private System.Threading.SendOrPostCallback iniciaViajeOperationCompleted;
     
-    private System.Threading.SendOrPostCallback creaViajeOperationCompleted;
+    private System.Threading.SendOrPostCallback buscarViajeOperationCompleted;
     
     private System.Threading.SendOrPostCallback actualizaViajeIdOperationCompleted;
     
     private System.Threading.SendOrPostCallback listarViajesOperationCompleted;
     
+    private System.Threading.SendOrPostCallback listaViajePromotorOperationCompleted;
+    
     private System.Threading.SendOrPostCallback actualizarViajeOperationCompleted;
+    
+    private System.Threading.SendOrPostCallback listarViajesUltimoMesOperationCompleted;
     
     /// <remarks/>
     public EJBTripServiceService() {
@@ -43,10 +49,13 @@ public partial class EJBTripServiceService : System.Web.Services.Protocols.SoapH
     }
     
     /// <remarks/>
+    public event creaViajeCompletedEventHandler creaViajeCompleted;
+    
+    /// <remarks/>
     public event iniciaViajeCompletedEventHandler iniciaViajeCompleted;
     
     /// <remarks/>
-    public event creaViajeCompletedEventHandler creaViajeCompleted;
+    public event buscarViajeCompletedEventHandler buscarViajeCompleted;
     
     /// <remarks/>
     public event actualizaViajeIdCompletedEventHandler actualizaViajeIdCompleted;
@@ -55,7 +64,55 @@ public partial class EJBTripServiceService : System.Web.Services.Protocols.SoapH
     public event listarViajesCompletedEventHandler listarViajesCompleted;
     
     /// <remarks/>
+    public event listaViajePromotorCompletedEventHandler listaViajePromotorCompleted;
+    
+    /// <remarks/>
     public event actualizarViajeCompletedEventHandler actualizarViajeCompleted;
+    
+    /// <remarks/>
+    public event listarViajesUltimoMesCompletedEventHandler listarViajesUltimoMesCompleted;
+    
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+    public void creaViaje([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] trip arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] user arg1) {
+        this.Invoke("creaViaje", new object[] {
+                    arg0,
+                    arg1});
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BegincreaViaje(trip arg0, user arg1, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("creaViaje", new object[] {
+                    arg0,
+                    arg1}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public void EndcreaViaje(System.IAsyncResult asyncResult) {
+        this.EndInvoke(asyncResult);
+    }
+    
+    /// <remarks/>
+    public void creaViajeAsync(trip arg0, user arg1) {
+        this.creaViajeAsync(arg0, arg1, null);
+    }
+    
+    /// <remarks/>
+    public void creaViajeAsync(trip arg0, user arg1, object userState) {
+        if ((this.creaViajeOperationCompleted == null)) {
+            this.creaViajeOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreaViajeOperationCompleted);
+        }
+        this.InvokeAsync("creaViaje", new object[] {
+                    arg0,
+                    arg1}, this.creaViajeOperationCompleted, userState);
+    }
+    
+    private void OncreaViajeOperationCompleted(object arg) {
+        if ((this.creaViajeCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.creaViajeCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
     
     /// <remarks/>
     [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -98,43 +155,46 @@ public partial class EJBTripServiceService : System.Web.Services.Protocols.SoapH
     
     /// <remarks/>
     [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-    public void creaViaje([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] trip arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] user arg1) {
-        this.Invoke("creaViaje", new object[] {
+    [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public trip buscarViaje([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] long arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] [System.Xml.Serialization.XmlIgnoreAttribute()] bool arg0Specified) {
+        object[] results = this.Invoke("buscarViaje", new object[] {
                     arg0,
-                    arg1});
+                    arg0Specified});
+        return ((trip)(results[0]));
     }
     
     /// <remarks/>
-    public System.IAsyncResult BegincreaViaje(trip arg0, user arg1, System.AsyncCallback callback, object asyncState) {
-        return this.BeginInvoke("creaViaje", new object[] {
+    public System.IAsyncResult BeginbuscarViaje(long arg0, bool arg0Specified, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("buscarViaje", new object[] {
                     arg0,
-                    arg1}, callback, asyncState);
+                    arg0Specified}, callback, asyncState);
     }
     
     /// <remarks/>
-    public void EndcreaViaje(System.IAsyncResult asyncResult) {
-        this.EndInvoke(asyncResult);
+    public trip EndbuscarViaje(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((trip)(results[0]));
     }
     
     /// <remarks/>
-    public void creaViajeAsync(trip arg0, user arg1) {
-        this.creaViajeAsync(arg0, arg1, null);
+    public void buscarViajeAsync(long arg0, bool arg0Specified) {
+        this.buscarViajeAsync(arg0, arg0Specified, null);
     }
     
     /// <remarks/>
-    public void creaViajeAsync(trip arg0, user arg1, object userState) {
-        if ((this.creaViajeOperationCompleted == null)) {
-            this.creaViajeOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreaViajeOperationCompleted);
+    public void buscarViajeAsync(long arg0, bool arg0Specified, object userState) {
+        if ((this.buscarViajeOperationCompleted == null)) {
+            this.buscarViajeOperationCompleted = new System.Threading.SendOrPostCallback(this.OnbuscarViajeOperationCompleted);
         }
-        this.InvokeAsync("creaViaje", new object[] {
+        this.InvokeAsync("buscarViaje", new object[] {
                     arg0,
-                    arg1}, this.creaViajeOperationCompleted, userState);
+                    arg0Specified}, this.buscarViajeOperationCompleted, userState);
     }
     
-    private void OncreaViajeOperationCompleted(object arg) {
-        if ((this.creaViajeCompleted != null)) {
+    private void OnbuscarViajeOperationCompleted(object arg) {
+        if ((this.buscarViajeCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-            this.creaViajeCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            this.buscarViajeCompleted(this, new buscarViajeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
     
@@ -221,6 +281,51 @@ public partial class EJBTripServiceService : System.Web.Services.Protocols.SoapH
     
     /// <remarks/>
     [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+    [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public trip[] listaViajePromotor([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] long arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] [System.Xml.Serialization.XmlIgnoreAttribute()] bool arg0Specified) {
+        object[] results = this.Invoke("listaViajePromotor", new object[] {
+                    arg0,
+                    arg0Specified});
+        return ((trip[])(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginlistaViajePromotor(long arg0, bool arg0Specified, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("listaViajePromotor", new object[] {
+                    arg0,
+                    arg0Specified}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public trip[] EndlistaViajePromotor(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((trip[])(results[0]));
+    }
+    
+    /// <remarks/>
+    public void listaViajePromotorAsync(long arg0, bool arg0Specified) {
+        this.listaViajePromotorAsync(arg0, arg0Specified, null);
+    }
+    
+    /// <remarks/>
+    public void listaViajePromotorAsync(long arg0, bool arg0Specified, object userState) {
+        if ((this.listaViajePromotorOperationCompleted == null)) {
+            this.listaViajePromotorOperationCompleted = new System.Threading.SendOrPostCallback(this.OnlistaViajePromotorOperationCompleted);
+        }
+        this.InvokeAsync("listaViajePromotor", new object[] {
+                    arg0,
+                    arg0Specified}, this.listaViajePromotorOperationCompleted, userState);
+    }
+    
+    private void OnlistaViajePromotorOperationCompleted(object arg) {
+        if ((this.listaViajePromotorCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.listaViajePromotorCompleted(this, new listaViajePromotorCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
     public void actualizarViaje([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] trip arg0) {
         this.Invoke("actualizarViaje", new object[] {
                     arg0});
@@ -255,6 +360,45 @@ public partial class EJBTripServiceService : System.Web.Services.Protocols.SoapH
         if ((this.actualizarViajeCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.actualizarViajeCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+    [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public trip[] listarViajesUltimoMes() {
+        object[] results = this.Invoke("listarViajesUltimoMes", new object[0]);
+        return ((trip[])(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginlistarViajesUltimoMes(System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("listarViajesUltimoMes", new object[0], callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public trip[] EndlistarViajesUltimoMes(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((trip[])(results[0]));
+    }
+    
+    /// <remarks/>
+    public void listarViajesUltimoMesAsync() {
+        this.listarViajesUltimoMesAsync(null);
+    }
+    
+    /// <remarks/>
+    public void listarViajesUltimoMesAsync(object userState) {
+        if ((this.listarViajesUltimoMesOperationCompleted == null)) {
+            this.listarViajesUltimoMesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnlistarViajesUltimoMesOperationCompleted);
+        }
+        this.InvokeAsync("listarViajesUltimoMes", new object[0], this.listarViajesUltimoMesOperationCompleted, userState);
+    }
+    
+    private void OnlistarViajesUltimoMesOperationCompleted(object arg) {
+        if ((this.listarViajesUltimoMesCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.listarViajesUltimoMesCompleted(this, new listarViajesUltimoMesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
     
@@ -693,6 +837,8 @@ public partial class waypoint {
         }
     }
 }
+
+
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
 [System.SerializableAttribute()]
@@ -711,6 +857,10 @@ public enum tripStatus {
     /// <remarks/>
     DONE,
 }
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+public delegate void creaViajeCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
@@ -740,7 +890,29 @@ public partial class iniciaViajeCompletedEventArgs : System.ComponentModel.Async
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
-public delegate void creaViajeCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
+public delegate void buscarViajeCompletedEventHandler(object sender, buscarViajeCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class buscarViajeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal buscarViajeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public trip Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((trip)(this.results[0]));
+        }
+    }
+}
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
@@ -774,4 +946,56 @@ public partial class listarViajesCompletedEventArgs : System.ComponentModel.Asyn
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+public delegate void listaViajePromotorCompletedEventHandler(object sender, listaViajePromotorCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class listaViajePromotorCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal listaViajePromotorCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public trip[] Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((trip[])(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
 public delegate void actualizarViajeCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+public delegate void listarViajesUltimoMesCompletedEventHandler(object sender, listarViajesUltimoMesCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class listarViajesUltimoMesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal listarViajesUltimoMesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public trip[] Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((trip[])(this.results[0]));
+        }
+    }
+}
