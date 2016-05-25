@@ -41,6 +41,8 @@ public partial class EJBApplicationServiceService : System.Web.Services.Protocol
     
     private System.Threading.SendOrPostCallback cancelarUsuarioOperationCompleted;
     
+    private System.Threading.SendOrPostCallback peticionesParaUnViajeOperationCompleted;
+    
     /// <remarks/>
     public EJBApplicationServiceService() {
         this.Url = "http://Vodkaneitor:8280/sdi3-40.EJB/ApplicationService";
@@ -66,6 +68,9 @@ public partial class EJBApplicationServiceService : System.Web.Services.Protocol
     
     /// <remarks/>
     public event cancelarUsuarioCompletedEventHandler cancelarUsuarioCompleted;
+    
+    /// <remarks/>
+    public event peticionesParaUnViajeCompletedEventHandler peticionesParaUnViajeCompleted;
     
     /// <remarks/>
     [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -356,10 +361,53 @@ public partial class EJBApplicationServiceService : System.Web.Services.Protocol
     }
     
     /// <remarks/>
+    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+    [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public listaApuntados[] peticionesParaUnViaje([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] trip arg0) {
+        object[] results = this.Invoke("peticionesParaUnViaje", new object[] {
+                    arg0});
+        return ((listaApuntados[])(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginpeticionesParaUnViaje(trip arg0, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("peticionesParaUnViaje", new object[] {
+                    arg0}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public listaApuntados[] EndpeticionesParaUnViaje(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((listaApuntados[])(results[0]));
+    }
+    
+    /// <remarks/>
+    public void peticionesParaUnViajeAsync(trip arg0) {
+        this.peticionesParaUnViajeAsync(arg0, null);
+    }
+    
+    /// <remarks/>
+    public void peticionesParaUnViajeAsync(trip arg0, object userState) {
+        if ((this.peticionesParaUnViajeOperationCompleted == null)) {
+            this.peticionesParaUnViajeOperationCompleted = new System.Threading.SendOrPostCallback(this.OnpeticionesParaUnViajeOperationCompleted);
+        }
+        this.InvokeAsync("peticionesParaUnViaje", new object[] {
+                    arg0}, this.peticionesParaUnViajeOperationCompleted, userState);
+    }
+    
+    private void OnpeticionesParaUnViajeOperationCompleted(object arg) {
+        if ((this.peticionesParaUnViajeCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.peticionesParaUnViajeCompleted(this, new peticionesParaUnViajeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
     public new void CancelAsync(object userState) {
         base.CancelAsync(userState);
     }
 }
+
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
 [System.SerializableAttribute()]
@@ -420,6 +468,7 @@ public partial class application {
         }
     }
 }
+
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
 [System.SerializableAttribute()]
@@ -532,6 +581,7 @@ public enum seatStatus {
     /// <remarks/>
     EXCLUDED,
 }
+
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
 [System.SerializableAttribute()]
@@ -541,6 +591,10 @@ public enum seatStatus {
 public partial class listaApuntados {
     
     private seat asientoField;
+    
+    private peticionEstado relacionViajeField;
+    
+    private bool relacionViajeFieldSpecified;
     
     private user usuarioField;
     
@@ -554,6 +608,28 @@ public partial class listaApuntados {
         }
         set {
             this.asientoField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public peticionEstado relacionViaje {
+        get {
+            return this.relacionViajeField;
+        }
+        set {
+            this.relacionViajeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool relacionViajeSpecified {
+        get {
+            return this.relacionViajeFieldSpecified;
+        }
+        set {
+            this.relacionViajeFieldSpecified = value;
         }
     }
     
@@ -579,6 +655,29 @@ public partial class listaApuntados {
         }
     }
 }
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.SerializableAttribute()]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://impl.business.sdi.uo/")]
+public enum peticionEstado {
+    
+    /// <remarks/>
+    ACCEPTED,
+    
+    /// <remarks/>
+    EXCLUDED,
+    
+    /// <remarks/>
+    PENDANT,
+    
+    /// <remarks/>
+    PROMOTER,
+    
+    /// <remarks/>
+    NO_SEAT,
+}
+
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
 public delegate void listaApuntadosPromotorCompletedEventHandler(object sender, listaApuntadosPromotorCompletedEventArgs e);
@@ -735,6 +834,32 @@ public partial class cancelarUsuarioCompletedEventArgs : System.ComponentModel.A
         get {
             this.RaiseExceptionIfNecessary();
             return ((seat)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+public delegate void peticionesParaUnViajeCompletedEventHandler(object sender, peticionesParaUnViajeCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class peticionesParaUnViajeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal peticionesParaUnViajeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public listaApuntados[] Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((listaApuntados[])(this.results[0]));
         }
     }
 }

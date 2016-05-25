@@ -34,7 +34,7 @@ namespace ConsoleApplication1
                     cancelarUsuario();
                 }
                 else if (opcion == 3)
-                {//TODO no estan ordenados de mas reciente a menos
+                {
                     listar();
                 }
                 else if (opcion == 4)
@@ -57,17 +57,8 @@ namespace ConsoleApplication1
         private static void listar()
         {
             EJBTripServiceService serviceT = new EJBTripServiceService();
-            trip[] trips = serviceT.listarViajes();
-            List<trip> tr = new List<trip>();
-            DateTime d = new DateTime();
-            //d.setTime(d.getTime() + 30 * 1000 * 60 * 60 * 24);
+            trip[] trips = serviceT.listarViajesUltimoMes();
 		    foreach(trip t in trips){
-                //if (t.departureDate.CompareTo < 0)
-                //{
-                    tr.Add(t);
-               // }
-            }
-		    foreach(trip t in tr){
                Console.WriteLine("Viaje: " + t.id + " salida: " +
                         t.departure.city + " destino: "
                         + t.destination.city);
@@ -148,96 +139,70 @@ namespace ConsoleApplication1
                 mostrarUsuarios();
                 Console.WriteLine("Seleccione el id del usuario o 0 para salir: ");
                 long idUsuario = long.Parse(Console.ReadLine());
-                if (existeUsuario(idUsuario))
-                {
-                    EJBUserServiceService userS = new EJBUserServiceService();
-                    user u = userS.findById(idUsuario);
-                    u.status = userStatus.CANCELLED;
-                    EJBApplicationServiceService service = new EJBApplicationServiceService();
-                    listaApuntados[] user = service.listaApuntadosUsuario(u);
-                    if (user != null) { 
-                        foreach (listaApuntados l in user)
-                        {
-                            service.cancelarUsuario(l);
-                            Console.WriteLine("El usuario se ha cancelado con exito");
-                        }
-                    }
-                    userS.updateUser(u);
-                    return;
-                }
                 if (idUsuario == 0L)
                 {
                     return;
                 }
-                else
+                EJBUserServiceService userS = new EJBUserServiceService();
+                bool borrado = userS.darDeBajaUsuario(idUsuario,true);
+                if (!borrado)
                 {
-                    Console.WriteLine("El usuario no existe, "
-                            + "elija uno de la lista");
+                        Console.WriteLine("El usuario no existe, "
+                                + "elija uno de la lista");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Usuario borrado satisfactoriamente");
+                    }
+                return;
                 }
+                
+               
             }
-        }
+        
 
-        private static bool existeUsuario(long id)
+    private static void mostrarUsuarios()
+    {
+        EJBUserServiceService service = new EJBUserServiceService();
+        user[] u = service.getUsers();
+        foreach (user us in u)
         {
-            user[] usuarios = getUsuarios();
-            foreach (user u in usuarios)
-            {
-                if (u.id == id)
-                {
-                    return true;
-                }
-            }
-            return false;
+            Console.WriteLine("Id: " + us.id + " nombre: " + us.name
+                    + " apellido" + us.surname);
         }
+    }
 
-        private static int listaViajePromotor(long id)
-        {
-            trip[] viajes = new EJBTripServiceService().listarViajes();
-            List<trip> aux = new List<trip>();
-            foreach (trip t in viajes)
-            {
-                if (t.promoterId.Equals(id))
-                {
-                    aux.Add(t);
-                }
-            }
-            return aux.Count;
-        }
+    
 
-        private static void mostrarUsuarios()
-        {
-            user[] u = getUsuarios();
-            foreach (user us in u)
-            {
-               Console.WriteLine("Id: " + us.id + " nombre: "
-                        + us.name + " apellido" + us.surname);
-            }
-        }
-
-        private static int listaViajeUsuario(user u)
-        {
-            EJBApplicationServiceService service = new EJBApplicationServiceService();
-            listaApuntados[] user = service.listaApuntadosUsuario(u);
-            if(user == null)
-            {
-                return 0;
-            }
-            return user.Length;
-        }
-
-        private static user[] getUsuarios()
-        {
-            EJBUserServiceService service = new EJBUserServiceService();
-            return service.getUsers();
-        }
+       
 
         private static void mostrarDatos()
         {
-            user[] user = getUsuarios();
+            EJBUserServiceService userS = new EJBUserServiceService();
+            EJBTripServiceService serviceT = new EJBTripServiceService();
+            EJBApplicationServiceService serviceA = new EJBApplicationServiceService();
+            user[] user = userS.getUsers();
             foreach (user u in user)
             {
-                int listaP = listaViajePromotor(u.id);
-                int listaA = listaViajeUsuario(u);
+                trip[] listaPromotor = serviceT.listaViajePromotor(u.id,false);
+                int listaP;
+                if(listaPromotor == null)
+                {
+                    listaP = 0;
+                }else
+                {
+                    listaP = listaPromotor.Length;
+                }
+                listaApuntados[] listaApuntados = serviceA.listaApuntadosUsuario(u);
+                int listaA;
+                if (listaApuntados == null)
+                {
+                    listaA = 0;
+                }
+                else
+                {
+                    listaA = listaApuntados.Length;
+                }
                 Console.WriteLine("Usuario: " + u.name + " " + u.surname
                         + " " + u.email);
                 Console.WriteLine("\tPromovio: " + listaP + " viajes");

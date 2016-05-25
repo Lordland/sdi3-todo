@@ -39,11 +39,19 @@ using System.Xml.Serialization;
 [System.Xml.Serialization.XmlIncludeAttribute(typeof(cerrarSesion))]
 [System.Xml.Serialization.XmlIncludeAttribute(typeof(iniciaSesionResponse))]
 [System.Xml.Serialization.XmlIncludeAttribute(typeof(iniciaSesion))]
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(darDeBajaUsuarioResponse))]
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(darDeBajaUsuario))]
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(buscaUsuarioPassResponse))]
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(buscaUsuarioPass))]
 [System.Xml.Serialization.XmlIncludeAttribute(typeof(crearUsuarioResponse))]
 [System.Xml.Serialization.XmlIncludeAttribute(typeof(crearUsuario))]
 public partial class EJBUserServiceService : System.Web.Services.Protocols.SoapHttpClientProtocol {
     
     private System.Threading.SendOrPostCallback crearUsuarioOperationCompleted;
+    
+    private System.Threading.SendOrPostCallback buscaUsuarioPassOperationCompleted;
+    
+    private System.Threading.SendOrPostCallback darDeBajaUsuarioOperationCompleted;
     
     private System.Threading.SendOrPostCallback iniciaSesionOperationCompleted;
     
@@ -66,6 +74,12 @@ public partial class EJBUserServiceService : System.Web.Services.Protocols.SoapH
     
     /// <remarks/>
     public event crearUsuarioCompletedEventHandler crearUsuarioCompleted;
+    
+    /// <remarks/>
+    public event buscaUsuarioPassCompletedEventHandler buscaUsuarioPassCompleted;
+    
+    /// <remarks/>
+    public event darDeBajaUsuarioCompletedEventHandler darDeBajaUsuarioCompleted;
     
     /// <remarks/>
     public event iniciaSesionCompletedEventHandler iniciaSesionCompleted;
@@ -127,6 +141,96 @@ public partial class EJBUserServiceService : System.Web.Services.Protocols.SoapH
         if ((this.crearUsuarioCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.crearUsuarioCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+    [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public user buscaUsuarioPass([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg1) {
+        object[] results = this.Invoke("buscaUsuarioPass", new object[] {
+                    arg0,
+                    arg1});
+        return ((user)(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginbuscaUsuarioPass(string arg0, string arg1, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("buscaUsuarioPass", new object[] {
+                    arg0,
+                    arg1}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public user EndbuscaUsuarioPass(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((user)(results[0]));
+    }
+    
+    /// <remarks/>
+    public void buscaUsuarioPassAsync(string arg0, string arg1) {
+        this.buscaUsuarioPassAsync(arg0, arg1, null);
+    }
+    
+    /// <remarks/>
+    public void buscaUsuarioPassAsync(string arg0, string arg1, object userState) {
+        if ((this.buscaUsuarioPassOperationCompleted == null)) {
+            this.buscaUsuarioPassOperationCompleted = new System.Threading.SendOrPostCallback(this.OnbuscaUsuarioPassOperationCompleted);
+        }
+        this.InvokeAsync("buscaUsuarioPass", new object[] {
+                    arg0,
+                    arg1}, this.buscaUsuarioPassOperationCompleted, userState);
+    }
+    
+    private void OnbuscaUsuarioPassOperationCompleted(object arg) {
+        if ((this.buscaUsuarioPassCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.buscaUsuarioPassCompleted(this, new buscaUsuarioPassCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://impl.business.sdi.uo/", ResponseNamespace="http://impl.business.sdi.uo/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+    [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public bool darDeBajaUsuario([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] long arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] [System.Xml.Serialization.XmlIgnoreAttribute()] bool arg0Specified) {
+        object[] results = this.Invoke("darDeBajaUsuario", new object[] {
+                    arg0,
+                    arg0Specified});
+        return ((bool)(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BegindarDeBajaUsuario(long arg0, bool arg0Specified, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("darDeBajaUsuario", new object[] {
+                    arg0,
+                    arg0Specified}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public bool EnddarDeBajaUsuario(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((bool)(results[0]));
+    }
+    
+    /// <remarks/>
+    public void darDeBajaUsuarioAsync(long arg0, bool arg0Specified) {
+        this.darDeBajaUsuarioAsync(arg0, arg0Specified, null);
+    }
+    
+    /// <remarks/>
+    public void darDeBajaUsuarioAsync(long arg0, bool arg0Specified, object userState) {
+        if ((this.darDeBajaUsuarioOperationCompleted == null)) {
+            this.darDeBajaUsuarioOperationCompleted = new System.Threading.SendOrPostCallback(this.OndarDeBajaUsuarioOperationCompleted);
+        }
+        this.InvokeAsync("darDeBajaUsuario", new object[] {
+                    arg0,
+                    arg0Specified}, this.darDeBajaUsuarioOperationCompleted, userState);
+    }
+    
+    private void OndarDeBajaUsuarioOperationCompleted(object arg) {
+        if ((this.darDeBajaUsuarioCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.darDeBajaUsuarioCompleted(this, new darDeBajaUsuarioCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
     
@@ -907,6 +1011,120 @@ public partial class iniciaSesionEntry {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://impl.business.sdi.uo/")]
+public partial class darDeBajaUsuarioResponse {
+    
+    private bool returnField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public bool @return {
+        get {
+            return this.returnField;
+        }
+        set {
+            this.returnField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://impl.business.sdi.uo/")]
+public partial class darDeBajaUsuario {
+    
+    private long arg0Field;
+    
+    private bool arg0FieldSpecified;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public long arg0 {
+        get {
+            return this.arg0Field;
+        }
+        set {
+            this.arg0Field = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool arg0Specified {
+        get {
+            return this.arg0FieldSpecified;
+        }
+        set {
+            this.arg0FieldSpecified = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://impl.business.sdi.uo/")]
+public partial class buscaUsuarioPassResponse {
+    
+    private user returnField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public user @return {
+        get {
+            return this.returnField;
+        }
+        set {
+            this.returnField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://impl.business.sdi.uo/")]
+public partial class buscaUsuarioPass {
+    
+    private string arg0Field;
+    
+    private string arg1Field;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string arg0 {
+        get {
+            return this.arg0Field;
+        }
+        set {
+            this.arg0Field = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string arg1 {
+        get {
+            return this.arg1Field;
+        }
+        set {
+            this.arg1Field = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://impl.business.sdi.uo/")]
 public partial class crearUsuarioResponse {
 }
 
@@ -948,6 +1166,58 @@ public partial class crearUsuario {
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
 public delegate void crearUsuarioCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+public delegate void buscaUsuarioPassCompletedEventHandler(object sender, buscaUsuarioPassCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class buscaUsuarioPassCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal buscaUsuarioPassCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public user Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((user)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+public delegate void darDeBajaUsuarioCompletedEventHandler(object sender, darDeBajaUsuarioCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class darDeBajaUsuarioCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal darDeBajaUsuarioCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public bool Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((bool)(this.results[0]));
+        }
+    }
+}
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.81.0")]
