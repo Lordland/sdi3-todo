@@ -7,8 +7,6 @@ import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
@@ -16,6 +14,7 @@ import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicSession;
+import javax.jms.TopicSubscriber;
 import javax.naming.NamingException;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -40,9 +39,8 @@ public class Main {
 	private TopicConnection tConn = null;
 	private TopicSession tSession = null;
 	private Topic topic = null;
-	private MessageConsumer consumer;
 
-	public static void main(String[] args) throws JMSException, NamingException, InterruptedException {
+	public static void main(String[] args) throws JMSException, NamingException {
 		Main main = new Main();
 		main.run();
 	}
@@ -54,11 +52,17 @@ public class Main {
 				.proxy(Sdi3ServiceRest.class);
 	}
 
-	private void run() throws JMSException, NamingException, InterruptedException {
+	private void run() throws JMSException, NamingException {
 		initialize();
-		String login = Console.readString("Introduzca su login:");
-		String password = Console.readString("Introduzca su password:");
-		this.cliente = client.buscarUsuario(login, password);
+		while(cliente == null){
+			String login = Console.readString("Introduzca su login:");
+			String password = Console.readString("Introduzca su password:");
+			this.cliente = client.buscarUsuario(login, password);
+			if(cliente == null){
+				System.out.println("El usuario o la contraseña son "
+						+ "incorrectos, pruebe de nuevo");
+			}
+		}
 		viajes = client.listarViajesPromotorParticipado(cliente.getId());
 		while (true) {
 			mostrarViajes();
@@ -73,7 +77,7 @@ public class Main {
 			}
 		}
 
-		Message msg = session.createTextMessage();
+		TextMessage msg = session.createTextMessage();
 		msg.setStringProperty("mensaje", "");
 		System.out.println("Bienvenido al chat del viaje con id "
 				+ viaje.getId() + " y Origen-Destino: "
@@ -83,7 +87,6 @@ public class Main {
 			msg = createMessage(cliente.getId(), viaje.getId());
 			sender.send(msg);
 			showMessage();
-
 		}
 		System.out.println("Fin del chat.");
 		close();
@@ -115,8 +118,32 @@ public class Main {
 			System.err.println("Error al intentar cerrar las conexiones");
 		}
 	}
+	
+	private boolean enLista(String[] s){
+		for(int i=0;i<s.length;i++){
+			if(s[i].equals(cliente.getId()+"")){
+				return true;
+			}
+		}
+		return false;
+	}
 
-	private void showMessage() throws NamingException {
+	private void showMessage() {
+		try {
+			TopicSubscriber recv = tSession.createSubscriber(topic);
+			Message recibir = recv.receive();
+			String idU = recibir.getStringProperty("usuario");
+			//String[] s = idU.split(",");
+			Long idT = recibir.getLongProperty("viaje");
+		    if (recibir.equals(null)) {
+		    	System.out.println("Timed out waiting for msg");
+		    }
+		    if(/*enLista(s)*//*idU.equals(cliente.getId()+"") &&*/ viaje.getId().equals(idT)){
+		        System.out.println("TopicSubscriber.recv, msgt="+recibir.getStringProperty("mensaje"));
+		    }
+		} catch (JMSException e) {
+			System.err.println("Error al intentar mostrar el mensaje");
+		}
 	}
 
 	private void initialize() throws JMSException, NamingException {
@@ -128,7 +155,6 @@ public class Main {
 		sender = session.createProducer(queue);
 		con.start();
 		setupPubSub();
-		
 	}
 
 	private TextMessage createMessage(Long idUser, Long idTrip)
@@ -143,40 +169,12 @@ public class Main {
 
 	public void setupPubSub() throws JMSException, NamingException {
 		// ... specify the JNDI properties specific to the vendor
-		TopicConnectionFactory tcf = (TopicConnectionFactory) Jndi
-				.find(JMS_CONNECTION_FACTORY);
-		tConn = tcf.createTopicConnection("sdi", "password");
+		TopicConnectionFactory tcf = 
+				(TopicConnectionFactory) Jndi.find(JMS_CONNECTION_FACTORY);
+		tConn = tcf.createTopicConnection("sdi","password");
 		topic = (Topic) Jndi.find(SDI3TOPIC);
 		tSession = tConn.createTopicSession(false,
 				TopicSession.AUTO_ACKNOWLEDGE);
-		consumer = tSession.createConsumer(topic);
-		TextListener listener = new TextListener();
-		consumer.setMessageListener(listener);
 		tConn.start();
-	}
-
-	public class TextListener implements MessageListener {
-		@Override
-		public void onMessage(Message message) {
-			Message msg = null;
-			try {
-				msg = message;
-				String idU = msg.getStringProperty("usuarios");
-				String[] s = idU.split(",");
-				Long idT = msg.getLongProperty("viaje");
-				for(int i=0;i<s.length;i++){
-					if (s[i].equals(cliente.getId()+"") 
-							&& idT.equals(viaje.getId()))
-						System.out.println("Reading message: "
-								+ msg.getStringProperty("mensaje"));
-				}
-			} catch (JMSException e) {
-				System.out.println("JMSException in onMessage(): "
-						+ e.toString());
-			} catch (Throwable t) {
-				System.out
-						.println("Exception in onMessage():" + t.getMessage());
-			}
-		}
 	}
 }
