@@ -59,9 +59,10 @@ public class Main {
 						.findById(r.getSeatFromUserId());
 				User u2 = new EJBUserServiceService().getUserServicePort()
 						.findById(r.getSeatAboutUserId());
-				System.out.println("\t" + t.getDestination() + " "
-						+ u1.getName() + " " + u2.getName() + " "
-						+ r.getValue() + "\n\t" + r.getComment());
+				System.out.println("\tCiudad: " + t.getDestination().getCity()
+						+ " \n\tComentario de: "+ u1.getName() + " hacia: " 
+						+ u2.getName() + " Puntuado con: "+ r.getValue() 
+						+ "\n\tComentario: " + r.getComment());
 			}
 		}
 	}
