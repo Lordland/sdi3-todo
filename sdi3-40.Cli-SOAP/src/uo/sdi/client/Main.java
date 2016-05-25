@@ -2,7 +2,6 @@ package uo.sdi.client;
 import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
-
 import com.sdi.ws.ApplicationService;
 import com.sdi.ws.EJBApplicationServiceService;
 import com.sdi.ws.EJBRatingServiceService;
@@ -60,11 +59,9 @@ public class Main {
 						.findById(r.getSeatFromUserId());
 				User u2 = new EJBUserServiceService().getUserServicePort()
 						.findById(r.getSeatAboutUserId());
-				System.out.println("\tDestino: " + t.getDestination().getCity()
-						+ " Comentario de: "+ u1.getName() 
-						+ " Hacia: " + u2.getName()+" \n\t\tValoracion: "
-						+r.getValue() + "\n\t\tComentario: " 
-						+ r.getComment() +"\n");
+				System.out.println("\t" + t.getDestination() + " "
+						+ u1.getName() + " " + u2.getName() + " "
+						+ r.getValue() + "\n\t" + r.getComment());
 			}
 		}
 	}
@@ -85,17 +82,16 @@ public class Main {
 			listaRatings();
 			Long id = Console.readLong("Seleccione el id del rating "
 					+ "que desee borrar o 0 para salir");
-			if (id.equals(null)) {
-				System.out
-				.println("Error, por favor introduzca un id de la lista");
-			}else if(id.equals(0)){
+			if (id == 0L) {
 				return;
 			} else {
-				new EJBRatingServiceService().getRatingServicePort()
-						.eliminarComentarios(id);
-				System.out.println("Rating borrado");
-				return;
+				System.out
+						.println("Error, por favor introduzca un id de la lista");
 			}
+			new EJBRatingServiceService().getRatingServicePort()
+					.eliminarComentarios(id);
+			System.out.println("Rating borrado");
+			return;
 		}
 	}
 
