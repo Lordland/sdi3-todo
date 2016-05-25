@@ -29,8 +29,6 @@ public class Main {
 			} else if (opcion == 2) {
 				cancelarUsuario();
 			} else if (opcion == 3) {
-				// TODO no estan ordenados de mas reciente
-				// a menos
 				listar();
 			} else if (opcion == 4) {
 				borrarRatings();
@@ -45,7 +43,6 @@ public class Main {
 
 	private static void listar() {
 		TripService serviceT = new RemoteEJBServicesLocator().getTripService();
-		// Resumir en ListarViajesConUnMesDeAntelacion
 		List<Trip> viajes = serviceT.listarViajesUltimoMes();
 		for (Trip t : viajes) {
 			System.out.println("Viaje: " + t.getId() + " salida: "
@@ -58,9 +55,10 @@ public class Main {
 						.findById(r.getSeatFromUserId());
 				User u2 = new RemoteEJBServicesLocator().getUserService()
 						.findById(r.getSeatAboutUserId());
-				System.out.println("\t" + t.getDestination() + " "
-						+ u1.getName() + " " + u2.getName() + " "
-						+ r.getValue() + "\n\t" + r.getComment());
+				System.out.println("\tCiudad: " + t.getDestination().getCity()
+						+ " \n\tComentario de: "+ u1.getName() + " hacia: " 
+						+ u2.getName() + " Puntuado con: "+ r.getValue() 
+						+ "\n\tComentario: " + r.getComment());
 			}
 		}
 	}
