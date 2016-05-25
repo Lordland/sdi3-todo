@@ -1,5 +1,8 @@
 package uo.sdi.business.impl;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -9,25 +12,36 @@ import uo.sdi.business.RatingService;
 import uo.sdi.business.ServicesFactory;
 import uo.sdi.business.TripService;
 import uo.sdi.business.UserService;
+import uo.sdi.persistence.util.JdbcHelper;
 
 
 public class LocalEJBServicesLocator implements ServicesFactory {
 
-	private static final String APPLICATION_SERVICE_JNDI_KEY ="java:global/"
-			+"sdi3-40/" + "sdi3-40.EJB/" + "EJBApplicationService!"
-			+ "uo.sdi.business.LocalApplicationService";
+	private static final String JNDI_PROPERTIES_FILE = "/jndi_dir.properties";
 	
-	private static final String TRIP_SERVICE_JNDI_KEY = "java:global/"
-			+ "sdi3-40/" + "sdi3-40.EJB/" + "EJBTripService!"
-			+ "uo.sdi.business.LocalTripService";
+	private static String APPLICATION_SERVICE_JNDI_KEY;
 	
-	private static final String USER_SERVICE_JNDI_KEY = "java:global/"
-			+ "sdi3-40/" + "sdi3-40.EJB/" + "EJBUserService!"
-			+ "uo.sdi.business.LocalUserService";
+	private static String TRIP_SERVICE_JNDI_KEY;
 	
-	private static final String RATING_SERVICE_JNDI_KEY = "java:global/"
-			+ "sdi3-40/" + "sdi3-40.EJB/" + "EJBRatingService!"
-			+ "uo.sdi.business.LocalRatingService";
+	private static String USER_SERVICE_JNDI_KEY;
+	
+	private static String RATING_SERVICE_JNDI_KEY;
+
+	private Properties properties;
+	
+	public LocalEJBServicesLocator(){
+		properties = new Properties();
+		try {
+			properties.load(JdbcHelper.class.getResourceAsStream(JNDI_PROPERTIES_FILE));
+		} catch (IOException e) {
+			throw new RuntimeException("Properties file not found: "
+					+ JNDI_PROPERTIES_FILE);
+			}
+		APPLICATION_SERVICE_JNDI_KEY = properties.getProperty("JNDI_APPLICATION_REMOTE");
+		TRIP_SERVICE_JNDI_KEY = properties.getProperty("JNDI_TRIP_REMOTE");
+		USER_SERVICE_JNDI_KEY = properties.getProperty("JNDI_USER_REMOTE");
+		RATING_SERVICE_JNDI_KEY = properties.getProperty("JNDI_RATING_REMOTE");
+	}
 
 	@Override
 	public ApplicationService getApplicationService() {
